@@ -46,7 +46,6 @@ public partial class LevelManager : MonoBehaviour
 
     player.GetComponentInChildren<Animator>().SetBool("IsIdle", false);
 
-    player.PlayerMaxSpeed = GameManager.Instance.PlayerMaxSpeed;
     var curentTouchPos = Camera.main.ScreenToViewportPoint(finger.ScreenPosition);
     player.LeftRightMovement(curentTouchPos);
   }

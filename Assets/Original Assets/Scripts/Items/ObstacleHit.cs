@@ -1,5 +1,4 @@
 using DG.Tweening;
-using Dreamteck.Splines;
 using System.Collections;
 using UnityEngine;
 
@@ -69,7 +68,6 @@ public class ObstacleHit : MonoBehaviour
       StartCoroutine(nameof(DelayIndicatorDisable), newIndicator);
 
       GameManager.Instance.PlayerBlockMovement.IsHit = true;
-      GameManager.Instance.PlayerBlockMovement.PlayerMaxSpeed = 0;
 
       if (gameObject.GetComponent<PlayerPowerController>().moneyAmount < 0)
       {

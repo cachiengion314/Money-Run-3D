@@ -26,7 +26,10 @@ public class StackIncrease : MonoBehaviour
       {
         if (gameObject.GetComponent<PlayerPowerController>().moneyAmount >= stackCheckpoint)
         {
-          stackPos.GetComponent<StackPosController>().moneyStack[i].gameObject.SetActive(true);
+          stackPos
+            .GetComponent<StackPosController>()
+            .moneyStack[i].gameObject
+            .SetActive(true);
           stackCheckpoint += 100f;
         }
         else
@@ -43,22 +46,38 @@ public class StackIncrease : MonoBehaviour
   {
     if (collision.gameObject.CompareTag("Uncollected"))
     {
+      print("Money collect");
+
       collision.gameObject.SetActive(false);
 
       var dollarEffectPos = new Vector3(
-        collision.gameObject.transform.position.x, 0, collision.gameObject.transform.position.z
+        collision.gameObject.transform.position.x,
+        0,
+        collision.gameObject.transform.position.z
       );
       Instantiate(dollarEffect, dollarEffectPos, Quaternion.identity);
 
-      GameObject newIndicator = Instantiate(moneyIndicator, moneyIndicatorPos.transform.position, Quaternion.identity);
-      newIndicator.GetComponent<MoneyIndicatorValue>().impactValue.text = string.Format("+" + "{0:0}", collision.gameObject.GetComponent<MoneyStackValue>().moneyValue);
+      GameObject newIndicator
+        = Instantiate(
+          moneyIndicator,
+          moneyIndicatorPos.transform.position,
+          Quaternion.identity
+        );
+      newIndicator
+        .GetComponent<MoneyIndicatorValue>()
+        .impactValue.text = string.Format(
+          "+" + "{0:0}", collision.gameObject.GetComponent<MoneyStackValue>().moneyValue
+        );
       newIndicator.transform.SetParent(playerBlock.transform);
       StartCoroutine(nameof(DelayIndicatorDisable), newIndicator);
 
       //Gain some money
-      gameObject.GetComponent<PlayerPowerController>().moneyAmount += collision.gameObject.GetComponent<MoneyStackValue>().moneyValue;
+      gameObject
+        .GetComponent<PlayerPowerController>()
+        .moneyAmount += collision.gameObject.GetComponent<MoneyStackValue>().moneyValue;
 
-      GameManager.Instance.gemWithStackMoney += collision.gameObject.GetComponent<MoneyStackValue>().stackValue;
+      GameManager.Instance.gemWithStackMoney
+        += collision.gameObject.GetComponent<MoneyStackValue>().stackValue;
 
       gameObject.GetComponent<EndingCalculation>().stackCollected++;
     }

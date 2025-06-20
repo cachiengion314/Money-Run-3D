@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerBlockMovement : MonoBehaviour
 {
   public static PlayerBlockMovement instance;
-  public float PlayerMaxSpeed;
   public bool IsHit;
   [SerializeField] Transform player;
   [Header("Datas")]
@@ -13,7 +12,6 @@ public class PlayerBlockMovement : MonoBehaviour
   private void Start()
   {
     instance = this;
-    PlayerMaxSpeed = GameManager.Instance.PlayerMaxSpeed;
     _lastFrameVelocity = 0;
   }
 
@@ -41,8 +39,8 @@ public class PlayerBlockMovement : MonoBehaviour
   {
     // at v = 0 ==> at + V0 = 0 ==> a = -V0 / t
     if (isMoveForward)
-      return -2;
-    return -5 * lastFrameVelocity;
+      return -3;
+    return -3 * lastFrameVelocity;
   }
 
   float CalculateVelocityBy(float lastFrameVelocity, bool isMoveForward)

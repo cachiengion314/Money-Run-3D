@@ -59,7 +59,6 @@ public class PlayerMovement : MonoBehaviour
     if (distance <= Constants.INVIS_CUBE_TO_BUILDING_BLOCK_DISTANCE)
     {
       invisibleTrack.GetComponent<SplineFollower>().follow = true;
-      PlayerBlockMovement.instance.PlayerMaxSpeed = 0;
     }
   }
 }
