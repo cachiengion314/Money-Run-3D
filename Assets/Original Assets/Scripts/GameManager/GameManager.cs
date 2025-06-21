@@ -18,6 +18,8 @@ public partial class GameManager : MonoBehaviour
   [Header("Dependencies")]
   GameState _gameState;
   public GameState GameState { get { return _gameState; } }
+  [SerializeField] CurvedPath curvedPath;
+  public CurvedPath CurvedPath { get { return curvedPath; } }
   [SerializeField] SplineFollower splineFollower;
   public SplineFollower SplineFollower { get { return splineFollower; } }
   public GameObject splineComputer;
@@ -94,7 +96,7 @@ public partial class GameManager : MonoBehaviour
         .GetComponent<MoneyStackValue>().moneyValue * MenuManager.instance.moneyStackMod;
     }
 
-    BakingCurvedPath();
+    curvedPath.BakingCurvedPath();
   }
 
   private void Update()

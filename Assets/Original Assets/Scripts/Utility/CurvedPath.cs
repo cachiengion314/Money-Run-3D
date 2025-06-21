@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public partial class GameManager : MonoBehaviour
+public class CurvedPath : MonoBehaviour
 {
   [Header("Curved path")]
   public int resolution = 100;
@@ -9,7 +9,7 @@ public partial class GameManager : MonoBehaviour
   [SerializeField] Transform[] controls;
   float _totalLength;
 
-  void BakingCurvedPath()
+  public void BakingCurvedPath()
   {
     _totalLength = (GetCurvedEndPos() - GetCurvedStartPos()).magnitude;
   }
@@ -19,6 +19,9 @@ public partial class GameManager : MonoBehaviour
   /// </summary>
   void OnDrawGizmos()
   {
+    if (points == null || controls == null) return;
+    if (points.Length == 0 || controls.Length == 0) return;
+
     Gizmos.color = gizmoColor;
     Vector3 prevPoint = Vector3.zero;
     bool first = true;
@@ -32,9 +35,8 @@ public partial class GameManager : MonoBehaviour
       Vector3 B01 = Lerp(points[0].position, controls[0].position, t);
       Vector3 B02 = Lerp(B01, points[1].position, t);
 
-      Vector3 point = transform.position + B02;
-      if (!first)
-        Gizmos.DrawLine(prevPoint, point);
+      Vector3 point = B02;
+      if (!first) Gizmos.DrawLine(prevPoint, point);
 
       prevPoint = point;
       first = false;
@@ -47,7 +49,7 @@ public partial class GameManager : MonoBehaviour
   }
 
   /// <summary>
-  /// t running from 0 to 1
+  /// t should running from 0 to 1
   /// </summary>
   /// <param name="t"></param>
   /// <returns></returns>
@@ -56,7 +58,7 @@ public partial class GameManager : MonoBehaviour
     Vector3 B01 = Lerp(points[0].position, controls[0].position, t);
     Vector3 B02 = Lerp(B01, points[1].position, t);
 
-    Vector3 point = transform.position + B02;
+    Vector3 point = B02;
     return point;
   }
 
@@ -65,9 +67,19 @@ public partial class GameManager : MonoBehaviour
     return points[0].position;
   }
 
+  public Transform GetCurvedStart()
+  {
+    return points[0];
+  }
+
   public Vector3 GetCurvedEndPos()
   {
-    return points[1].position;
+    return points[^1].position;
+  }
+
+  public Transform GetCurvedEnd()
+  {
+    return points[^1];
   }
 
   /// <summary>

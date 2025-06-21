@@ -8,41 +8,16 @@ public class ObstacleHit : MonoBehaviour
   [SerializeField] private GameObject playerBlock;
   [SerializeField] private float knockBackDistance;
   [SerializeField] private GameObject stackPos;
-  private float stackCheckpoint = 10400f;
   [SerializeField] private GameObject moneyIndicator;
   [SerializeField] private GameObject moneyIndicatorPos;
   [SerializeField] Animator characterAnim;
   [Header("Effects")]
   [SerializeField] ParticleSystem hittingEfx;
 
-  private void Update()
-  {
-    for (int i = stackPos.GetComponent<StackPosController>().moneyStack.Length - 1; i >= 0; i--)
-    {
-      if (gameObject.GetComponent<PlayerPowerController>().moneyAmount <= 0)
-      {
-        stackPos.GetComponent<StackPosController>().moneyStack[0].gameObject.SetActive(false);
-      }
-      if (gameObject.GetComponent<PlayerPowerController>().moneyAmount < stackCheckpoint)
-      {
-        stackPos.GetComponent<StackPosController>().moneyStack[i].gameObject.SetActive(false);
-        stackCheckpoint -= 100f;
-      }
-      else
-      {
-        stackCheckpoint = 10400f;
-        return;
-      }
-    }
-  }
-
-  //When hit an obstacle
   private void OnCollisionEnter(Collision collision)
   {
     if (collision.gameObject.CompareTag("Obstacles"))
     {
-      GameManager.Instance.PlayerControl.enabled = false;
-
       //minus some Money on Player
       SoundManager.instance.PlayHittingSfx();
       Instantiate(hittingEfx, collision.gameObject.transform.position, Quaternion.identity);
@@ -68,14 +43,13 @@ public class ObstacleHit : MonoBehaviour
       StartCoroutine(nameof(DelayIndicatorDisable), newIndicator);
 
       GameManager.Instance.PlayerBlockMovement.IsHit = true;
-
       if (gameObject.GetComponent<PlayerPowerController>().moneyAmount < 0)
       {
         // case: player have no money
         characterAnim.SetTrigger("Dead");
         gameObject.GetComponent<Collider>().enabled = false;
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
-
+        GameManager.Instance.SetGameState(GameState.Pause);
         return;
       }
 

@@ -34,8 +34,6 @@ public class ListOfCurrentMoneyStack : MonoBehaviour
 
     if (other.gameObject.CompareTag("Staircase"))
     {
-      gameObject.GetComponent<StackIncrease>().endingCalculating = true;
-
       if (listOfMoneyStack.Count < 10)
       {
         for (int i = 0; i < listOfMoneyStack.Count; i++)

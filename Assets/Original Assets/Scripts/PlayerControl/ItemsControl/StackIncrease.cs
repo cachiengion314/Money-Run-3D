@@ -6,48 +6,21 @@ using UnityEngine;
 //电报https://t.me/gamecode999
 //网页客服 http://web3incubators.com/kefu.html
 
-public class StackIncrease : MonoBehaviour
+public partial class StackIncrease : MonoBehaviour
 {
+  [Header("Stack Increase Stuffs")]
   [SerializeField] private GameObject stackPos;
-  private float stackCheckpoint = 100f;
   [SerializeField] private GameObject moneyIndicator;
   [SerializeField] private GameObject moneyIndicatorPos;
   [SerializeField] private GameObject playerBlock;
   [Header("Effects")]
   [SerializeField] private GameObject dollarEffect;
 
-  public bool endingCalculating = false;
-
-  private void Update()
-  {
-    if (!endingCalculating)
-    {
-      for (int i = 0; i < stackPos.GetComponent<StackPosController>().moneyStack.Length; i++)
-      {
-        if (gameObject.GetComponent<PlayerPowerController>().moneyAmount >= stackCheckpoint)
-        {
-          stackPos
-            .GetComponent<StackPosController>()
-            .moneyStack[i].gameObject
-            .SetActive(true);
-          stackCheckpoint += 100f;
-        }
-        else
-        {
-          stackCheckpoint = 100f;
-          return;
-        }
-      }
-    }
-  }
-
   //When hit another building block
   private void OnCollisionEnter(Collision collision)
   {
     if (collision.gameObject.CompareTag("Uncollected"))
     {
-      print("Money collect");
-
       collision.gameObject.SetActive(false);
 
       var dollarEffectPos = new Vector3(
@@ -80,6 +53,8 @@ public class StackIncrease : MonoBehaviour
         += collision.gameObject.GetComponent<MoneyStackValue>().stackValue;
 
       gameObject.GetComponent<EndingCalculation>().stackCollected++;
+
+      OnCollected();
     }
   }
 

@@ -4,21 +4,31 @@ using UnityEngine;
 public class PlayerBlockMovement : MonoBehaviour
 {
   public static PlayerBlockMovement instance;
-  public bool IsHit;
+  [Header("Player Block Movement Dependencies")]
   [SerializeField] Transform player;
+  [SerializeField] CurvedPath curvedPath;
   [Header("Datas")]
   float _lastFrameVelocity;
+  public bool IsHit;
 
   private void Start()
   {
     instance = this;
     _lastFrameVelocity = 0;
+    curvedPath.BakingCurvedPath();
   }
 
   void Update()
   {
     if (GameManager.Instance.GameState != GameState.Gameplay) return;
 
+    var curvedStartPos = curvedPath.GetCurvedStartPos();
+    var curvedEnd = curvedPath.GetCurvedEnd();
+    var playerPos = new Vector3(curvedStartPos.x, curvedEnd.position.y, curvedStartPos.z);
+    var dirToPlayer = playerPos - curvedEnd.position;
+    curvedEnd.transform.position += 12 * Time.deltaTime * dirToPlayer;
+
+    if (IsHit) return;
     if (LevelManager.Instance.IsUserScreenTouching)
     {
       ForwardMoving(true);
@@ -31,7 +41,7 @@ public class PlayerBlockMovement : MonoBehaviour
   {
     // toMin  +
     // (value - fromMin) * length(to) / length(from)
-    // minimum new value + new range
+    // thats mean: minimum new value + new range
     return toMin + (value - fromMin) * (toMax - toMin) / (fromMax - fromMin);
   }
 
@@ -49,7 +59,7 @@ public class PlayerBlockMovement : MonoBehaviour
     var v = lastFrameVelocity + accelerate * Time.deltaTime;
     if (math.abs(v) > GameManager.Instance.PlayerMaxSpeed)
       v = math.sign(v) * GameManager.Instance.PlayerMaxSpeed;
-    if (!isMoveForward && math.abs(v) < .05f)
+    if (!isMoveForward && math.sign(v) != math.sign(lastFrameVelocity))
     {
       v = 0;
       // player stop moving event
@@ -78,14 +88,14 @@ public class PlayerBlockMovement : MonoBehaviour
 
   public void LeftRightMovement(Vector3 currentTouchPos)
   {
-    var curvedPos = GameManager.Instance.FindCurvedPosAt(transform.position);
+    var centerCurvedPos = GameManager.Instance.CurvedPath.FindCurvedPosAt(transform.position);
 
     var currentPosX = Mathf.Clamp(currentTouchPos.x, .25f, .75f);
     transform.position
       = new Vector3(
         transform.position.x,
         transform.position.y,
-        MapRange(currentPosX, .25f, .75f, curvedPos.z - .80f, curvedPos.z + .90f)
+        MapRange(currentPosX, .25f, .75f, centerCurvedPos.z - .80f, centerCurvedPos.z + .90f)
       );
   }
 }

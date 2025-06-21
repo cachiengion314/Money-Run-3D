@@ -19,7 +19,7 @@ public class CameraFollow : MonoBehaviour
 
   void Update()
   {
-    var curvedPos = GameManager.Instance.FindCurvedPosAt(
+    var curvedPos = GameManager.Instance.CurvedPath.FindCurvedPosAt(
       GameManager.Instance.PlayerControl.transform.position
     );
 
