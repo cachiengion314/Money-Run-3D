@@ -18,8 +18,6 @@ public partial class GameManager : MonoBehaviour
   [Header("Dependencies")]
   GameState _gameState;
   public GameState GameState { get { return _gameState; } }
-  [SerializeField] CurvedPath curvedPath;
-  public CurvedPath CurvedPath { get { return curvedPath; } }
   [SerializeField] SplineFollower splineFollower;
   public SplineFollower SplineFollower { get { return splineFollower; } }
   public GameObject splineComputer;
@@ -62,41 +60,36 @@ public partial class GameManager : MonoBehaviour
 
   public List<GameObject> dataLevels;
 
-
   private void Awake()
   {
     Instance = this;
-
-    Time.timeScale = 0;
-    SetGameState(GameState.Pause);
-    levelNo = PlayerPrefs.GetInt("Level_Number", 0);
-    if (levelNo >= dataLevels.Count)
-    {
-      levelNo = 0;
-    }
-    totalGemAmount = PlayerPrefs.GetFloat("Total_Gem", 0);
-
     InitUserData();
   }
 
-  // Start is called before the first frame update
   void Start()
   {
-    levelNoDisplay.text = string.Format("Level " + "{0:0}", levelNo + 1);
+    // SetGameState(GameState.Pause);
+    // levelNo = CurrentLevelIndex;
+    // if (levelNo >= dataLevels.Count)
+    // {
+    //   levelNo = 0;
+    //   CurrentLevelIndex = 0;
+    // }
+    // totalGemAmount = PlayerPrefs.GetFloat("Total_Gem", 0);
 
-    ObstacleSpawn();
+    // levelNoDisplay.text = string.Format("Level " + "{0:0}", levelNo + 1);
 
-    //Setup money stack value through upgrade
-    foreach (var stack in GameObject.FindGameObjectsWithTag("Uncollected"))
-    {
-      stack
-        .GetComponent<MoneyStackValue>()
-        .moneyValue
-        += stack
-        .GetComponent<MoneyStackValue>().moneyValue * MenuManager.instance.moneyStackMod;
-    }
+    // ObstacleSpawn();
 
-    curvedPath.BakingCurvedPath();
+    // //Setup money stack value through upgrade
+    // foreach (var stack in GameObject.FindGameObjectsWithTag("Uncollected"))
+    // {
+    //   stack
+    //     .GetComponent<MoneyStackValue>()
+    //     .moneyValue
+    //     += stack
+    //     .GetComponent<MoneyStackValue>().moneyValue * MenuManager.instance.moneyStackMod;
+    // }
   }
 
   private void Update()
@@ -119,7 +112,6 @@ public partial class GameManager : MonoBehaviour
       !EventSystem.current.IsPointerOverGameObject(0)
     )
     {
-      Time.timeScale = 1.0f;
       canvas.transform.GetChild(0).gameObject.SetActive(false);
       canvas.transform.GetChild(1).gameObject.SetActive(true);
 
@@ -160,9 +152,13 @@ public partial class GameManager : MonoBehaviour
     gameOver = true;
   }
 
-  void ObstacleSpawn()
+  public void ObstacleSpawn()
   {
-    Instantiate(dataLevels[levelNo], dataLevels[levelNo].transform.position, dataLevels[levelNo].transform.rotation);
+    Instantiate(
+      dataLevels[levelNo],
+      dataLevels[levelNo].transform.position,
+      dataLevels[levelNo].transform.rotation
+    );
     StartCoroutine(DelayCountingStack());
   }
 

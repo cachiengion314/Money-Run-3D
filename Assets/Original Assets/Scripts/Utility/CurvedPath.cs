@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class CurvedPath : MonoBehaviour
@@ -96,5 +97,17 @@ public class CurvedPath : MonoBehaviour
     var curvedPos = FindCurvedPosAt(t);
 
     return curvedPos;
+  }
+
+  public Vector3 FindDirectionAt(Vector3 nearPosition)
+  {
+    var startPos = GetCurvedStartPos();
+    var currLength = (nearPosition - startPos).magnitude;
+    var t2 = currLength / _totalLength;
+    var t1 = math.max(t2 - .01f, 0);
+    var curvedPos2 = FindCurvedPosAt(t2);
+    var curvedPos1 = FindCurvedPosAt(t1);
+
+    return curvedPos2 - curvedPos1;
   }
 }

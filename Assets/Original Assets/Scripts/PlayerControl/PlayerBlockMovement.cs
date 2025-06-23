@@ -5,6 +5,7 @@ public class PlayerBlockMovement : MonoBehaviour
 {
   public static PlayerBlockMovement instance;
   [Header("Player Block Movement Dependencies")]
+  [SerializeField] StackIncrease cupStack;
   [SerializeField] Transform player;
   [SerializeField] CurvedPath curvedPath;
   [Header("Datas")]
@@ -20,19 +21,11 @@ public class PlayerBlockMovement : MonoBehaviour
 
   void Update()
   {
+    CalculateCurvedCups();
+
     if (GameManager.Instance.GameState != GameState.Gameplay) return;
-
-    var curvedStartPos = curvedPath.GetCurvedStartPos();
-    var curvedEnd = curvedPath.GetCurvedEnd();
-    var verticalEndPos = new Vector3(
-      curvedStartPos.x,
-      curvedStartPos.y + curvedPath.TotalLength,
-      curvedStartPos.z
-    );
-    var dirToVerticalEnd = (verticalEndPos - curvedEnd.position).normalized;
-    curvedEnd.transform.position += 4 * Time.deltaTime * dirToVerticalEnd;
-
     if (IsHit) return;
+
     if (LevelManager.Instance.IsUserScreenTouching)
     {
       ForwardMoving(true);
@@ -51,7 +44,6 @@ public class PlayerBlockMovement : MonoBehaviour
 
   float CalculateAccelerateBy(float lastFrameVelocity, bool isMoveForward)
   {
-    // at v = 0 ==> at + V0 = 0 ==> a = -V0 / t
     if (isMoveForward)
       return -3;
     return -3 * lastFrameVelocity;
@@ -92,15 +84,30 @@ public class PlayerBlockMovement : MonoBehaviour
 
   public void LeftRightMovement(Vector3 currentTouchPos)
   {
-    var centerCurvedPos = GameManager.Instance.CurvedPath.FindCurvedPosAt(transform.position);
+    var centerCurvedPos = LevelManager.Instance.CurvedPath.FindCurvedPosAt(transform.position);
 
     var currentPosX = Mathf.Clamp(currentTouchPos.x, .25f, .75f);
     transform.position
       = new Vector3(
         transform.position.x,
         transform.position.y,
-        MapRange(currentPosX, .25f, .75f, centerCurvedPos.z - .80f, centerCurvedPos.z + .90f)
+        MapRange(currentPosX, .25f, .75f, centerCurvedPos.z - .80f, centerCurvedPos.z + .85f)
       );
+  }
+
+  public void CalculateCurvedCups()
+  {
+    var curvedStartPos = curvedPath.GetCurvedStartPos();
+    var curvedEnd = curvedPath.GetCurvedEnd();
+    var verticalEndPos = new Vector3(
+      curvedStartPos.x,
+      curvedStartPos.y + curvedPath.TotalLength,
+      curvedStartPos.z
+    );
+    var dirToVerticalEnd = verticalEndPos - curvedEnd.position;
+    curvedEnd.transform.position += 7 * Time.deltaTime * dirToVerticalEnd;
+
+    cupStack.UpdateCurvedPosCups();
   }
 }
 

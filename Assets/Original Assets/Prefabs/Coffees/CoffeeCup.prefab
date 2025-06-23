@@ -129,9 +129,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6491277551322081218}
+  - component: {fileID: 5238472319169140178}
   m_Layer: 0
   m_Name: CoffeeCup
-  m_TagString: Untagged
+  m_TagString: Uncollected
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,6 +153,27 @@ Transform:
   - {fileID: 3591617090520147577}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5238472319169140178
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6988358213797300895}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.18, y: 0.3, z: 0.18}
+  m_Center: {x: 0, y: 0.15, z: 0}
 --- !u!1 &8152394512559744993
 GameObject:
   m_ObjectHideFlags: 0

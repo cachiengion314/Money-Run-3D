@@ -1,0 +1,28 @@
+{
+    "Index": 0,
+    "LevelObjsPaths": [
+        {
+            "PercentPosition": 11,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        },
+        {
+            "PercentPosition": 12,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        }
+    ],
+    "TotalLevelLength": 77.0
+}

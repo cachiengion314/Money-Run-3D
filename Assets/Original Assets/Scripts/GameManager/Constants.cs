@@ -29,4 +29,6 @@ public class Constants : MonoBehaviour
   public static float STARTING_BUILDING_BLOCK_SPEED = 0.01f;
   public static string KEY_IS_SOUND_ON = "is_sound_on";
   public static string KEY_IS_HAPTIC_ON = "is_haptic_on";
+  public static string KEY_CURRENT_LVL_INDEX = "current_level_index";
+  public static string NAME_LEVEL_FILE = "level_";
 }

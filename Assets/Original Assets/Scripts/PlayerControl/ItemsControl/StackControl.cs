@@ -7,12 +7,16 @@ public partial class StackIncrease : MonoBehaviour
   [SerializeField] Transform cupStackParent;
   [SerializeField] CurvedPath curvedPath;
 
-  void Update()
+  public void UpdateCurvedPosCups()
   {
     for (int i = 0; i < cupStackParent.childCount; ++i)
     {
       var cup = cupStackParent.GetChild(i);
       var localPos = CalculateLocalPosCupAt(i);
+      var worldPos = cupStackParent.TransformPoint(localPos);
+      var direction = curvedPath.FindDirectionAt(worldPos);
+
+      cup.transform.up = direction.normalized;
       cup.transform.localPosition = localPos;
     }
   }

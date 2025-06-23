@@ -38,16 +38,16 @@ public class MenuManager : MonoBehaviour
   private void Awake()
   {
     instance = this;
+  }
 
+  private void Start()
+  {
     valueLevel = PlayerPrefs.GetInt("Value_Level", 1);
     incomeLevel = PlayerPrefs.GetInt("Income_Level", 1);
 
     moneyStackMod = valuePerLevel[valueLevel - 1];
     incomePercentage = incomePerLevel[incomeLevel - 1];
-  }
 
-  private void Start()
-  {
     settingAnim = setting.GetComponent<Animator>();
   }
 
@@ -97,7 +97,8 @@ public class MenuManager : MonoBehaviour
     {
       GameManager.Instance.levelNo = 0;
     }
-    PlayerPrefs.SetInt("Level_Number", GameManager.Instance.levelNo);
+    GameManager.Instance.CurrentLevelIndex++;
+    // PlayerPrefs.SetInt("Level_Number", GameManager.Instance.levelNo);
     PlayerPrefs.SetFloat("Total_Gem", GameManager.totalGemAmount);
     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
   }
@@ -116,8 +117,9 @@ public class MenuManager : MonoBehaviour
     {
       GameManager.Instance.levelNo = 0;
     }
-    PlayerPrefs.SetInt("Level_Number", GameManager.Instance.levelNo);
-   
+    GameManager.Instance.CurrentLevelIndex++;
+    // PlayerPrefs.SetInt("Level_Number", GameManager.Instance.levelNo);
+
     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
   }
 
@@ -129,7 +131,9 @@ public class MenuManager : MonoBehaviour
     {
       GameManager.Instance.levelNo = 0;
     }
-    PlayerPrefs.SetInt("Level_Number", GameManager.Instance.levelNo);
+
+    GameManager.Instance.CurrentLevelIndex++;
+    // PlayerPrefs.SetInt("Level_Number", GameManager.Instance.levelNo);
     PlayerPrefs.SetFloat("Total_Gem", GameManager.totalGemAmount);
     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
   }

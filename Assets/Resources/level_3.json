@@ -1,0 +1,116 @@
+{
+    "Index": 2,
+    "LevelObjsPaths": [
+        {
+            "PercentPosition": 11,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        },
+        {
+            "PercentPosition": 12,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        },
+        {
+            "PercentPosition": 13,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        },
+        {
+            "PercentPosition": 14,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        },
+        {
+            "PercentPosition": 15,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        },
+        {
+            "PercentPosition": 16,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        },
+        {
+            "PercentPosition": 17,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        },
+        {
+            "PercentPosition": 18,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        },
+        {
+            "PercentPosition": 19,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        },
+        {
+            "PercentPosition": 20,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        }
+    ],
+    "TotalLevelLength": 100.0
+}

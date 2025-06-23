@@ -2,6 +2,20 @@ using UnityEngine;
 
 public partial class GameManager : MonoBehaviour
 {
+  private int _currentLevelIndex;
+  public int CurrentLevelIndex
+  {
+    get
+    {
+      return _currentLevelIndex;
+    }
+    set
+    {
+      _currentLevelIndex = value;
+      PlayerPrefs.SetInt(Constants.KEY_CURRENT_LVL_INDEX, value);
+    }
+  }
+
   private bool _isSoundOn;
   public bool IsSoundOn
   {
@@ -46,5 +60,7 @@ public partial class GameManager : MonoBehaviour
     _isSoundOn = isSoundInt == 1 ? true : false;
     var isHapticInt = PlayerPrefs.GetInt(Constants.KEY_IS_HAPTIC_ON, 1);
     _isHapticOn = isHapticInt == 1 ? true : false;
+
+    _currentLevelIndex = PlayerPrefs.GetInt(Constants.KEY_CURRENT_LVL_INDEX, 0);
   }
 }

@@ -7,13 +7,11 @@ public class EndingCalculation : MonoBehaviour
   [SerializeField] private GameObject invisibleTrack;
   [SerializeField] private GameObject playerController;
 
-  // Start is called before the first frame update
   void Start()
   {
     stackCollected = 0;
   }
 
-  // Update is called once per frame
   void Update()
   {
     CalculateGemByStar();
@@ -99,15 +97,5 @@ public class EndingCalculation : MonoBehaviour
       = (GameManager.Instance.gemByCompleteMap +
         GameManager.Instance.gemByStar +
         GameManager.Instance.gemWithStackMoney) / 100 * MenuManager.instance.incomePercentage;
-  }
-
-  private void OnCollisionEnter(Collision collision)
-  {
-
-    if (collision.gameObject.CompareTag("Stair"))
-    {
-      invisibleTrack.GetComponent<SplineFollower>().follow = false;
-      playerController.GetComponent<PlayerControl>().enabled = false;
-    }
   }
 }

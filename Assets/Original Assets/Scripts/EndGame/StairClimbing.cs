@@ -17,14 +17,16 @@ public class StairClimbing : MonoBehaviour
       var player = GameManager.Instance.PlayerBlockMovement;
       player.GetComponentInChildren<Animator>().SetBool("IsIdle", true);
       GameManager.Instance.SetGameState(GameState.Pause);
-      StartCoroutine(nameof(StartClimbing));
+
+      print("StairClimbing ");
+      // StartCoroutine(nameof(StartClimbing));
     }
   }
 
   IEnumerator StartClimbing()
   {
     yield return new WaitForSeconds(0.5f);
-    //gameObject.GetComponent<Collider>().enabled = false;
+
     gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
     float stackMoneyCollected = gameObject.GetComponent<PlayerPowerController>().moneyAmount;
