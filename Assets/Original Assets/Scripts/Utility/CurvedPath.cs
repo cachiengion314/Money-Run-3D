@@ -8,6 +8,7 @@ public class CurvedPath : MonoBehaviour
   [SerializeField] Transform[] points;
   [SerializeField] Transform[] controls;
   float _totalLength;
+  public float TotalLength { get { return _totalLength; } }
 
   public void BakingCurvedPath()
   {

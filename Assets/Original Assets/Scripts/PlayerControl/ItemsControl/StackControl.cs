@@ -12,7 +12,7 @@ public partial class StackIncrease : MonoBehaviour
     for (int i = 0; i < cupStackParent.childCount; ++i)
     {
       var cup = cupStackParent.GetChild(i);
-      var localPos = CalculateOriginalPosAt(i);
+      var localPos = CalculateLocalPosCupAt(i);
       cup.transform.localPosition = localPos;
     }
   }
@@ -22,10 +22,10 @@ public partial class StackIncrease : MonoBehaviour
     var index = cupStackParent.childCount;
 
     var cup = LevelManager.Instance.SpawnCoffeeCupAt(cupStackParent);
-    cup.transform.localPosition = CalculateOriginalPosAt(index);
+    cup.transform.localPosition = CalculateLocalPosCupAt(index);
   }
 
-  Vector3 CalculateOriginalPosAt(int index)
+  Vector3 CalculateLocalPosCupAt(int index)
   {
     // 1 --- 3 
     //    0

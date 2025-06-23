@@ -24,9 +24,13 @@ public class PlayerBlockMovement : MonoBehaviour
 
     var curvedStartPos = curvedPath.GetCurvedStartPos();
     var curvedEnd = curvedPath.GetCurvedEnd();
-    var playerPos = new Vector3(curvedStartPos.x, curvedEnd.position.y, curvedStartPos.z);
-    var dirToPlayer = playerPos - curvedEnd.position;
-    curvedEnd.transform.position += 12 * Time.deltaTime * dirToPlayer;
+    var verticalEndPos = new Vector3(
+      curvedStartPos.x,
+      curvedStartPos.y + curvedPath.TotalLength,
+      curvedStartPos.z
+    );
+    var dirToVerticalEnd = (verticalEndPos - curvedEnd.position).normalized;
+    curvedEnd.transform.position += 4 * Time.deltaTime * dirToVerticalEnd;
 
     if (IsHit) return;
     if (LevelManager.Instance.IsUserScreenTouching)
