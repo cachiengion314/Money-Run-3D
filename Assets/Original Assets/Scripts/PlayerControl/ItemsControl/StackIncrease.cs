@@ -17,16 +17,16 @@ public partial class StackIncrease : MonoBehaviour
   [SerializeField] private GameObject dollarEffect;
 
   //When hit another building block
-  private void OnCollisionEnter(Collision collision)
+  private void OnTriggerEnter(Collider other)
   {
-    if (collision.gameObject.CompareTag("Uncollected"))
+    if (other.gameObject.CompareTag("Uncollected"))
     {
-      collision.gameObject.SetActive(false);
+      other.gameObject.SetActive(false);
 
       var dollarEffectPos = new Vector3(
-        collision.gameObject.transform.position.x,
+        other.gameObject.transform.position.x,
         0,
-        collision.gameObject.transform.position.z
+        other.gameObject.transform.position.z
       );
       Instantiate(dollarEffect, dollarEffectPos, Quaternion.identity);
 

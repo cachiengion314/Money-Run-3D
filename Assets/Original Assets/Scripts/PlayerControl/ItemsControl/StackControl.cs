@@ -6,6 +6,8 @@ public partial class StackIncrease : MonoBehaviour
   [Header("Stack Control Stuffs")]
   [SerializeField] Transform cupStackParent;
   [SerializeField] CurvedPath curvedPath;
+  readonly float _verticalDeltaLength = .18f;
+  readonly float _horizontalDeltaLength = .09f;
 
   public void UpdateCurvedPosCups()
   {
@@ -21,12 +23,24 @@ public partial class StackIncrease : MonoBehaviour
     }
   }
 
+  public void UpdateCurvedEndPosition()
+  {
+    var tier = math.floor((float)cupStackParent.childCount / 4);
+    Vector3 centerPos = curvedPath.GetCurvedStartPos();
+    var verticalCenterPos = centerPos + tier * _verticalDeltaLength * Vector3.up;
+    curvedPath.GetCurvedEnd().position = verticalCenterPos + 1.0f * Vector3.up;
+
+    curvedPath.UpdateTotalLength();
+  }
+
   void OnCollected()
   {
     var index = cupStackParent.childCount;
 
     var cup = LevelManager.Instance.SpawnCoffeeCupAt(cupStackParent);
     cup.transform.localPosition = CalculateLocalPosCupAt(index);
+
+    UpdateCurvedEndPosition();
   }
 
   Vector3 CalculateLocalPosCupAt(int index)
@@ -36,9 +50,6 @@ public partial class StackIncrease : MonoBehaviour
     // 0 --- 2
     var i = index % 4;
     var tier = math.floor((float)index / 4);
-
-    var horizontalDeltaLength = .09f;
-    var verticalDeltaLength = .18f;
 
     var upRight = cupStackParent.transform.forward + cupStackParent.transform.right;
     var downLeft = -upRight;
@@ -50,16 +61,16 @@ public partial class StackIncrease : MonoBehaviour
     );
     Vector3 localPos = centerLocalPos;
     if (i == 0)
-      localPos += downLeft * horizontalDeltaLength;
+      localPos += downLeft * _horizontalDeltaLength;
     else if (i == 1)
-      localPos += upLeft * horizontalDeltaLength;
+      localPos += upLeft * _horizontalDeltaLength;
     else if (i == 2)
-      localPos += downRight * horizontalDeltaLength;
+      localPos += downRight * _horizontalDeltaLength;
     else if (i == 3)
-      localPos += upRight * horizontalDeltaLength;
+      localPos += upRight * _horizontalDeltaLength;
 
     var verticalCenterLocalPos
-      = centerLocalPos + tier * verticalDeltaLength * cupStackParent.transform.up;
+      = centerLocalPos + tier * _verticalDeltaLength * cupStackParent.transform.up;
 
     verticalCenterLocalPos = cupStackParent.transform.InverseTransformPoint(
       curvedPath.FindCurvedPosAt(cupStackParent.TransformPoint(verticalCenterLocalPos))

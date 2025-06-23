@@ -110,6 +110,50 @@
                     "type": 0
                 }
             ]
+        },
+        {
+            "PercentPosition": 21,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        },
+        {
+            "PercentPosition": 22,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        },
+        {
+            "PercentPosition": 23,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
+        },
+        {
+            "PercentPosition": 24,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ]
         }
     ],
     "TotalLevelLength": 100.0

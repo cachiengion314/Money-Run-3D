@@ -112,8 +112,8 @@ public partial class LevelManager : MonoBehaviour
   public void LoadLevelFrom(int level)
   {
     var levelInfo = HoangNam.SaveSystem.Load<LevelInformation>(
-  "Resources/" + Constants.NAME_LEVEL_FILE + level
-);
+      "Resources/" + Constants.NAME_LEVEL_FILE + level
+    );
     if (levelInfo == null) { print("Level not existed!"); return; }
     levelInformation = levelInfo;
     print("Load successfully");

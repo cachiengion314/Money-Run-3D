@@ -13,6 +13,11 @@ public class CurvedPath : MonoBehaviour
 
   public void BakingCurvedPath()
   {
+    UpdateTotalLength();
+  }
+
+  public void UpdateTotalLength()
+  {
     _totalLength = (GetCurvedEndPos() - GetCurvedStartPos()).magnitude;
   }
 

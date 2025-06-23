@@ -17,6 +17,7 @@ public class PlayerBlockMovement : MonoBehaviour
     instance = this;
     _lastFrameVelocity = 0;
     curvedPath.BakingCurvedPath();
+    cupStack.UpdateCurvedEndPosition();
   }
 
   void Update()
@@ -105,7 +106,7 @@ public class PlayerBlockMovement : MonoBehaviour
       curvedStartPos.z
     );
     var dirToVerticalEnd = verticalEndPos - curvedEnd.position;
-    curvedEnd.transform.position += 7 * Time.deltaTime * dirToVerticalEnd;
+    curvedEnd.transform.position += 12 * Time.deltaTime * dirToVerticalEnd;
 
     cupStack.UpdateCurvedPosCups();
   }
