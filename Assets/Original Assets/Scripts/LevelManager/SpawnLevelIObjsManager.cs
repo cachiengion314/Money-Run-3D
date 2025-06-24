@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using Dreamteck.Splines;
 using UnityEngine;
 
 [Serializable]
 public enum LevelObjType
 {
+  None,
   CoffeeCup,
   Barrier,
   Helmet,
@@ -20,9 +22,15 @@ public class LevelObj
 [Serializable]
 public class LevelObjsPath
 {
+  [Tooltip("X value of vector mean from position, Y value mean to position")]
+  public Vector2 RangePercentPosition;
+  [Tooltip("The amount of items in RangePercentPosition, and the system will spawn items in vertical")]
   [Range(0, 100)]
-  public int PercentPosition;
+  public int ItemsInRangeAmount;
+  [Tooltip("The amount of items in horizontal, and the system will spawn items in horizontal")]
   public LevelObj[] LevelObjs;
+  [Tooltip("If true the obj will not spawn base on its index of the LevelObjs but randomly spawn")]
+  public bool IsRandomHorizontalPosition;
 }
 
 [Serializable]
@@ -91,20 +99,100 @@ public partial class LevelManager : MonoBehaviour
     for (int i = 0; i < levelObjsPaths.Length; ++i)
     {
       var path = levelObjsPaths[i];
-
-      var percent = (float)path.PercentPosition / 100;
-      var centerPos = curvedPath.FindCurvedPosAt(percent);
-      var levelObjs = path.LevelObjs;
-
-      for (int j = 0; j < levelObjs.Length; ++j)
+      var range = path.RangePercentPosition;
+      if ((range.y - range.x) > 0 && path.ItemsInRangeAmount > 0)
       {
-        var obj = levelObjs[j];
-        GameObject spawnedObj = null;
-        if (obj.type == LevelObjType.CoffeeCup)
-        {
-          spawnedObj = Instantiate(coffeeCupPref, levelObjsParent);
-        }
-        spawnedObj.transform.position = centerPos + new Vector3(0, 0, -.5f + j);
+        float deltaLength = (range.y - range.x) / path.ItemsInRangeAmount;
+        for (int j = 0; j < path.ItemsInRangeAmount; ++j)
+          SpawnObjsAt(range.x + j * deltaLength, path.LevelObjs, path.IsRandomHorizontalPosition);
+        continue;
+      }
+
+      SpawnObjsAt(range.x, path.LevelObjs, path.IsRandomHorizontalPosition);
+    }
+  }
+
+  void SpawnObjsAt(float percentPosition, LevelObj[] levelObjs, bool _isRandomPos = false)
+  {
+    var percent = (float)percentPosition / 100;
+    var centerPos = curvedPath.FindCurvedPosAt(percent);
+
+    var _levelObjIndexes = new List<int>(levelObjs.Length);
+    for (int j = 0; j < levelObjs.Length; ++j)
+      _levelObjIndexes.Add(j);
+
+    for (int j = 0; j < levelObjs.Length; ++j)
+    {
+      var obj = levelObjs[j];
+      if (obj.type == LevelObjType.None) continue;
+
+      GameObject spawnedObj = null;
+      if (obj.type == LevelObjType.CoffeeCup)
+      {
+        spawnedObj = Instantiate(coffeeCupPref, levelObjsParent);
+      }
+      else if (obj.type == LevelObjType.Barrier)
+      {
+        spawnedObj = Instantiate(barrierBarPref, levelObjsParent);
+      }
+      else if (obj.type == LevelObjType.Helmet)
+      {
+        spawnedObj = Instantiate(helmetPref, levelObjsParent);
+      }
+      else if (obj.type == LevelObjType.PowerPortal)
+      {
+        spawnedObj = Instantiate(powerPortal, levelObjsParent);
+        var mathNumbers = new int[4] { 1, 2, 3, 4 };
+        var mathOperators = new MathOperator[4] {
+          MathOperator.Divide,
+          MathOperator.Minus,
+          MathOperator.Multiple,
+          MathOperator.Plus,
+        };
+        spawnedObj.GetComponent<PowerPortalControl>().SetMathNumber(
+          mathNumbers[UnityEngine.Random.Range(0, mathNumbers.Length)]
+        );
+        spawnedObj.GetComponent<PowerPortalControl>().SetMathOperator(
+          mathOperators[UnityEngine.Random.Range(0, mathOperators.Length)]
+        );
+      }
+      if (spawnedObj == null) continue;
+
+      var randIdx = UnityEngine.Random.Range(0, _levelObjIndexes.Count);
+      int J = _levelObjIndexes[randIdx];
+      _levelObjIndexes.RemoveAt(randIdx);
+
+      if (levelObjs.Length == 1)
+      {
+        if (!_isRandomPos)
+          spawnedObj.transform.position = centerPos + new Vector3(0, 0, .0f + j);
+        else
+          spawnedObj.transform.position
+          = centerPos + new Vector3(0, 0, .0f + J);
+      }
+      if (levelObjs.Length == 2)
+      {
+        if (!_isRandomPos)
+          spawnedObj.transform.position = centerPos + new Vector3(0, 0, -.5f + j);
+        else
+          spawnedObj.transform.position
+          = centerPos + new Vector3(0, 0, -.5f + J);
+      }
+      if (levelObjs.Length == 3)
+      {
+        if (!_isRandomPos)
+          spawnedObj.transform.position = centerPos + new Vector3(0, 0, -.5f + .5f * j);
+        else
+          spawnedObj.transform.position
+          = centerPos + new Vector3(0, 0, -.5f + .5f * J);
+      }
+      if (levelObjs.Length == 4)
+      {
+        if (!_isRandomPos)
+          spawnedObj.transform.position = centerPos + new Vector3(0, 0, -1.0f + .5f * j);
+        else
+          spawnedObj.transform.position
+          = centerPos + new Vector3(0, 0, -1.0f + .5f * J);
       }
     }
   }

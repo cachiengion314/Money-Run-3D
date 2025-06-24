@@ -130,6 +130,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6491277551322081218}
   - component: {fileID: 5238472319169140178}
+  - component: {fileID: 1694312142632254033}
+  - component: {fileID: 4232456250871918918}
   m_Layer: 0
   m_Name: CoffeeCup
   m_TagString: Uncollected
@@ -174,6 +176,43 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.18, y: 0.3, z: 0.18}
   m_Center: {x: 0, y: 0.15, z: 0}
+--- !u!114 &1694312142632254033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6988358213797300895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 378d4796ac79b4ca6901e1ee6b07689e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 200
+--- !u!114 &4232456250871918918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6988358213797300895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c4e115f9dc4e4722ab98098597ecf2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableAutoUpdate: 0
+  useGravity: 1
+  gravity:
+    x: 0
+    y: -1
+    z: 0
+  decayCoefficient: 0
+  mass: 1
+  Accelerate:
+    x: 1
+    y: 12
+    z: 0
 --- !u!1 &8152394512559744993
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,19 +22,14 @@ public partial class GameManager : MonoBehaviour
   public SplineFollower SplineFollower { get { return splineFollower; } }
   public GameObject splineComputer;
   public SplineComputer spline;
-
   public static float totalGemAmount;
   public float currentGemCollected = 0f;
-
   public float gemWithIncome;
   public float gemWithStackMoney;
   public float gemByCompleteMap;
   public float gemByStar;
-
   public bool gainPower = false;
-
   public GameObject player;
-
   public GameObject canvas;
   public bool hasWon = false;
   public bool gameOver = false;
@@ -42,22 +37,15 @@ public partial class GameManager : MonoBehaviour
   public GameObject powerDisplay;
   public Text powerDisplayText;
   public Text levelNoDisplay;
-
   public Image secondStar;
   public Image thirdStar;
-
   public Image fillDistanceBar;
   public GameObject cameraFollowPoint;
-
   public int levelNo;
-
   public float totalNumberOfStack;
-
   public GameObject stackPos;
   public float increamentBlockSpeed;
-
   public GameObject[] dataObstacle;
-
   public List<GameObject> dataLevels;
 
   private void Awake()
@@ -66,38 +54,11 @@ public partial class GameManager : MonoBehaviour
     InitUserData();
   }
 
-  void Start()
-  {
-    // SetGameState(GameState.Pause);
-    // levelNo = CurrentLevelIndex;
-    // if (levelNo >= dataLevels.Count)
-    // {
-    //   levelNo = 0;
-    //   CurrentLevelIndex = 0;
-    // }
-    // totalGemAmount = PlayerPrefs.GetFloat("Total_Gem", 0);
-
-    // levelNoDisplay.text = string.Format("Level " + "{0:0}", levelNo + 1);
-
-    // ObstacleSpawn();
-
-    // //Setup money stack value through upgrade
-    // foreach (var stack in GameObject.FindGameObjectsWithTag("Uncollected"))
-    // {
-    //   stack
-    //     .GetComponent<MoneyStackValue>()
-    //     .moneyValue
-    //     += stack
-    //     .GetComponent<MoneyStackValue>().moneyValue * MenuManager.instance.moneyStackMod;
-    // }
-  }
-
   private void Update()
   {
     LetUsStartTheGame();
 
     WinScreenPopup();
-
     LoseCondition();
     LoseScreenPopup();
 
@@ -139,7 +100,7 @@ public partial class GameManager : MonoBehaviour
 
   void LoseCondition()
   {
-    if (player.GetComponent<PlayerPowerController>().moneyAmount < 0 && startLosing)
+    if (player.GetComponent<StackIncrease>().CoffeeCupAmount <= 0 && startLosing)
     {
       startLosing = false;
       StartCoroutine(LoseScreenDelay());

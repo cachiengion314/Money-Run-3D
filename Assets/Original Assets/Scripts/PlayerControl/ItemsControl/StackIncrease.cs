@@ -21,8 +21,6 @@ public partial class StackIncrease : MonoBehaviour
   {
     if (other.gameObject.CompareTag("Uncollected"))
     {
-      other.gameObject.SetActive(false);
-
       var dollarEffectPos = new Vector3(
         other.gameObject.transform.position.x,
         0,
@@ -30,37 +28,15 @@ public partial class StackIncrease : MonoBehaviour
       );
       Instantiate(dollarEffect, dollarEffectPos, Quaternion.identity);
 
-      // GameObject newIndicator
-      //   = Instantiate(
-      //     moneyIndicator,
-      //     moneyIndicatorPos.transform.position,
-      //     Quaternion.identity
-      //   );
-      // newIndicator
-      //   .GetComponent<MoneyIndicatorValue>()
-      //   .impactValue.text = string.Format(
-      //     "+" + "{0:0}", collision.gameObject.GetComponent<MoneyStackValue>().moneyValue
-      //   );
-      // newIndicator.transform.SetParent(playerBlock.transform);
-      // StartCoroutine(nameof(DelayIndicatorDisable), newIndicator);
-
-      //Gain some money
-      // gameObject
-      //   .GetComponent<PlayerPowerController>()
-      //   .moneyAmount += collision.gameObject.GetComponent<MoneyStackValue>().moneyValue;
-
-      // GameManager.Instance.gemWithStackMoney
-      //   += collision.gameObject.GetComponent<MoneyStackValue>().stackValue;
-
+      // Gain some money
+      gameObject
+        .GetComponent<PlayerPowerController>()
+        .moneyAmount += other.GetComponent<ICollectable>().GetValue();
       gameObject.GetComponent<EndingCalculation>().stackCollected++;
 
       OnCollected();
-    }
-  }
 
-  IEnumerator DelayIndicatorDisable(GameObject newIndicator)
-  {
-    yield return new WaitForSeconds(0.36f);
-    Destroy(newIndicator);
+      Destroy(other.gameObject);
+    }
   }
 }

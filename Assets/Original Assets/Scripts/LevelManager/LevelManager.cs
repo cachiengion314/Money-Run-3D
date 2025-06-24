@@ -33,6 +33,9 @@ public partial class LevelManager : MonoBehaviour
       = string.Format("Level " + "{0:0}", GameManager.Instance.levelNo + 1);
 
     SpawnLevelObjsFrom(levelInformation);
+
+    GameManager.Instance.PlayerBlockMovement
+      .GetComponent<StackIncrease>().AddCoffeeCupsWith(4);
   }
 
   void OnDestroy()

@@ -22,37 +22,17 @@ public class PlayerBlockMovement : MonoBehaviour
 
   void Update()
   {
-    CalculateCurvedCups();
+    CalculateCurvedEnd();
+    CalculateCurvedPosCups();
 
     if (GameManager.Instance.GameState != GameState.Gameplay) return;
     if (IsHit) return;
-
     if (LevelManager.Instance.IsUserScreenTouching)
     {
-      var curvedStartPos = curvedPath.GetCurvedStartPos();
-      var _curvedEnd = curvedPath.GetCurvedEnd();
-      var verticalEndPos = new Vector3(
-        curvedStartPos.x,
-        curvedStartPos.y + curvedPath.TotalLength,
-        curvedStartPos.z
-      );
-      var dirToVerticalEnd = verticalEndPos - _curvedEnd.position;
-      if (_curvedEnd.TryGetComponent<PhysicMovement>(out var _movement))
-      {
-        _movement.ApplyVelocity(8 * dirToVerticalEnd);
-        _curvedEnd.transform.position = _movement.UpdatePosition(_curvedEnd.transform.position);
-      }
       ForwardMoving(true);
       return;
     }
-
     ForwardMoving(false);
-    var curvedEnd = curvedPath.GetCurvedEnd();
-    if (curvedEnd.TryGetComponent<PhysicMovement>(out var movement))
-    {
-      movement.DecayVelocity();
-      curvedEnd.transform.position = movement.UpdatePosition(curvedEnd.transform.position);
-    }
   }
 
   float MapRange(float value, float fromMin, float fromMax, float toMin, float toMax)
@@ -116,7 +96,7 @@ public class PlayerBlockMovement : MonoBehaviour
       );
   }
 
-  public void CalculateCurvedCups()
+  public void CalculateCurvedPosCups()
   {
     var curvedStartPos = curvedPath.GetCurvedStartPos();
     var curvedEnd = curvedPath.GetCurvedEnd();
@@ -126,13 +106,36 @@ public class PlayerBlockMovement : MonoBehaviour
       curvedStartPos.z
     );
     var dirToVerticalEnd = verticalEndPos - curvedEnd.position;
-    if (curvedEnd.TryGetComponent<PhysicMovement>(out var movement))
+    if (curvedEnd.TryGetComponent<PhysicMovement>(out var curvedPhysic))
     {
-      movement.AddForce(24 * dirToVerticalEnd);
-      curvedEnd.transform.position = movement.UpdatePosition(curvedEnd.transform.position);
+      curvedPhysic.AddForce(24 * dirToVerticalEnd);
+      curvedEnd.transform.position = curvedPhysic.UpdatePosition(curvedEnd.transform.position);
     }
 
     cupStack.UpdateCurvedPosCups();
+  }
+
+  public void CalculateCurvedEnd()
+  {
+    var curvedEnd = curvedPath.GetCurvedEnd();
+    if (!curvedEnd.TryGetComponent<PhysicMovement>(out var curvedPhysic)) return;
+
+    if (!LevelManager.Instance.IsUserScreenTouching)
+    {
+      curvedPhysic.DecayVelocity();
+      curvedEnd.transform.position = curvedPhysic.UpdatePosition(curvedEnd.transform.position);
+      return;
+    }
+
+    var curvedStartPos = curvedPath.GetCurvedStartPos();
+    var verticalEndPos = new Vector3(
+      curvedStartPos.x,
+      curvedStartPos.y + curvedPath.TotalLength,
+      curvedStartPos.z
+    );
+    var dirToVerticalEnd = verticalEndPos - curvedEnd.position;
+    curvedPhysic.ApplyVelocity(6 * dirToVerticalEnd);
+    curvedEnd.transform.position = curvedPhysic.UpdatePosition(curvedEnd.transform.position);
   }
 }
 
