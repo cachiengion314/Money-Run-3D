@@ -35,6 +35,8 @@ public partial class StackIncrease : MonoBehaviour
     }
     if (dropAmount > 0)
       UpdateCurvedPosCups();
+
+    LevelManager.Instance.CheckLoseCondition();
   }
 
   public void UpdateCurvedPosCups()
@@ -65,8 +67,8 @@ public partial class StackIncrease : MonoBehaviour
 
   public void DivideCoffeeCupsWith(int amount)
   {
-    var newCupsAmount = (int)math.ceil((float)coffeeCupParent.childCount / amount);
-    var _amount = coffeeCupParent.childCount - newCupsAmount;
+    var newCupsAmount = (float)(coffeeCupParent.childCount / amount);
+    var _amount = (int)(coffeeCupParent.childCount - math.ceil(newCupsAmount));
     DropCoffeeCups(_amount);
   }
 
@@ -88,8 +90,13 @@ public partial class StackIncrease : MonoBehaviour
         return;
       }
       var cup = LevelManager.Instance.SpawnCoffeeCupAt(coffeeCupParent);
+      if (cup.TryGetComponent<Collider>(out var col))
+      {
+        col.enabled = false;
+      }
       cup.transform.localPosition = CalculateLocalPosCupAt(index);
     }
+
     UpdateCurvedEndPosition();
   }
 
@@ -100,6 +107,10 @@ public partial class StackIncrease : MonoBehaviour
     var index = coffeeCupParent.childCount;
 
     var cup = LevelManager.Instance.SpawnCoffeeCupAt(coffeeCupParent);
+    if (cup.TryGetComponent<Collider>(out var col))
+    {
+      col.enabled = false;
+    }
     cup.transform.localPosition = CalculateLocalPosCupAt(index);
 
     UpdateCurvedEndPosition();

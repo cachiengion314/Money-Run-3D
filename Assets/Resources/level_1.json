@@ -99,17 +99,49 @@
                 "x": 45.0,
                 "y": 85.0
             },
-            "ItemsInRangeAmount": 8,
+            "ItemsInRangeAmount": 26,
             "LevelObjs": [
                 {
                     "type": 0
                 },
                 {
-                    "type": 3
+                    "type": 2
+                }
+            ],
+            "IsRandomHorizontalPosition": true
+        },
+        {
+            "RangePercentPosition": {
+                "x": 87.0,
+                "y": 93.0
+            },
+            "ItemsInRangeAmount": 4,
+            "LevelObjs": [
+                {
+                    "type": 4
+                },
+                {
+                    "type": 4
+                }
+            ],
+            "IsRandomHorizontalPosition": true
+        },
+        {
+            "RangePercentPosition": {
+                "x": 96.0,
+                "y": 99.0
+            },
+            "ItemsInRangeAmount": 4,
+            "LevelObjs": [
+                {
+                    "type": 1
+                },
+                {
+                    "type": 2
                 }
             ],
             "IsRandomHorizontalPosition": true
         }
     ],
-    "TotalLevelLength": 100.0
+    "TotalLevelLength": 80.0
 }

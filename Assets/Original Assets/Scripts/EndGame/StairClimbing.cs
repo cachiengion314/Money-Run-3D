@@ -18,7 +18,8 @@ public class StairClimbing : MonoBehaviour
       player.GetComponentInChildren<Animator>().SetBool("IsIdle", true);
       GameManager.Instance.SetGameState(GameState.Pause);
 
-      print("StairClimbing ");
+      print("Won the game ");
+      StartCoroutine(nameof(Celebrating));
       // StartCoroutine(nameof(StartClimbing));
     }
   }
@@ -90,6 +91,6 @@ public class StairClimbing : MonoBehaviour
   IEnumerator DelayGameWinning()
   {
     yield return new WaitForSeconds(3f);
-    GameManager.Instance.hasWon = true;
+    GameManager.Instance.ShowWinScreenPopup();
   }
 }

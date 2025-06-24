@@ -22,17 +22,6 @@ public class ObstacleHit : MonoBehaviour
 
       var player = GameManager.Instance.PlayerBlockMovement;
       player.IsHit = true;
-      if (gameObject.GetComponent<StackIncrease>().CoffeeCupAmount == 0)
-      {
-        // case: player have no money
-        player.GetComponent<StackIncrease>().DropAllCoffeeCups();
-        characterAnim.SetTrigger("Dead");
-        gameObject.GetComponent<Collider>().enabled = false;
-        GameManager.Instance.SetGameState(GameState.Pause);
-        return;
-      }
-
-      // case: player still have cup
       player.GetComponent<StackIncrease>().DropCoffeeCups(1);
       characterAnim.SetBool("Hit", true);
       StartCoroutine(nameof(PlayerMovingToPosition));
@@ -42,10 +31,7 @@ public class ObstacleHit : MonoBehaviour
   IEnumerator PlayerMovingToPosition()
   {
     yield return null;
-
     characterAnim.SetBool("Hit", false);
-    GameManager.Instance.PlayerBlockMovement
-      .GetComponentInChildren<Animator>().SetBool("IsIdle", true);
     GameManager.Instance.PlayerBlockMovement.IsHit = false;
   }
 }

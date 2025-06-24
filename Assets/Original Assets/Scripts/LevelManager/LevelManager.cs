@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Dreamteck.Splines;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ public partial class LevelManager : MonoBehaviour
     GameManager.Instance.SetGameState(GameState.Pause);
     GameManager.Instance.levelNo = GameManager.Instance.CurrentLevelIndex;
     if (isSelectedMatchedCurrentLevel)
-      GameManager.Instance.levelNo = levelSelected;
+      GameManager.Instance.levelNo = levelSelected - 1;
     LoadLevelFrom(GameManager.Instance.levelNo);
 
     if (GameManager.Instance.levelNo >= GameManager.Instance.dataLevels.Count)
@@ -33,9 +34,29 @@ public partial class LevelManager : MonoBehaviour
       = string.Format("Level " + "{0:0}", GameManager.Instance.levelNo + 1);
 
     SpawnLevelObjsFrom(levelInformation);
+  }
 
-    GameManager.Instance.PlayerBlockMovement
-      .GetComponent<StackIncrease>().AddCoffeeCupsWith(4);
+  public void CheckLoseCondition()
+  {
+    if (
+      GameManager.Instance.PlayerBlockMovement
+        .GetComponent<StackIncrease>().CoffeeCupAmount <= 0
+    )
+    {
+      GameManager.Instance.PlayerBlockMovement
+        .GetComponentInChildren<Animator>()
+        .SetTrigger("Dead");
+      GameManager.Instance.PlayerBlockMovement
+        .GetComponent<Collider>().enabled = false;
+
+      GameManager.Instance.SetGameState(GameState.Pause);
+      DOVirtual.DelayedCall(
+        1.5f,
+        () =>
+        {
+          GameManager.Instance.ShowLoseScreenPopup();
+        });
+    }
   }
 
   void OnDestroy()

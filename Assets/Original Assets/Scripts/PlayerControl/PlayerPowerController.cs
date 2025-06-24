@@ -16,7 +16,6 @@ public class PlayerPowerController : MonoBehaviour
     if (other.gameObject.CompareTag("PowerPortal"))
     {
       Instantiate(powerUpEfx, other.transform.position, Quaternion.identity);
-
       var _operator = other.GetComponent<PowerPortalControl>().Operator;
       var _mathNumber = other.GetComponent<PowerPortalControl>().MathNumber;
 

@@ -18,6 +18,8 @@ public class PlayerBlockMovement : MonoBehaviour
     _lastFrameVelocity = 0;
     curvedPath.BakingCurvedPath();
     cupStack.UpdateCurvedEndPosition();
+
+    cupStack.AddCoffeeCupsWith(4);
   }
 
   void Update()

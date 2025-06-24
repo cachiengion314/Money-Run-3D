@@ -44,8 +44,6 @@ public partial class LevelManager : MonoBehaviour
     var player = GameManager.Instance.PlayerBlockMovement;
     if (player.IsHit) { return; }
 
-    player.GetComponentInChildren<Animator>().SetBool("IsIdle", false);
-
     var curentTouchPos = Camera.main.ScreenToViewportPoint(finger.ScreenPosition);
     player.LeftRightMovement(curentTouchPos);
   }

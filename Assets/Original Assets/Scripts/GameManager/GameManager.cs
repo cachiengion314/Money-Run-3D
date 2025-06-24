@@ -57,11 +57,6 @@ public partial class GameManager : MonoBehaviour
   private void Update()
   {
     LetUsStartTheGame();
-
-    WinScreenPopup();
-    LoseCondition();
-    LoseScreenPopup();
-
     currentGemCollected = gemWithStackMoney + gemByCompleteMap + gemByStar + gemWithIncome;
   }
 
@@ -82,35 +77,14 @@ public partial class GameManager : MonoBehaviour
     }
   }
 
-  void WinScreenPopup()
+  public void ShowWinScreenPopup()
   {
-    if (hasWon)
-    {
-      canvas.transform.GetChild(2).gameObject.SetActive(true);
-    }
+    canvas.transform.GetChild(2).gameObject.SetActive(true);
   }
 
-  void LoseScreenPopup()
+  public void ShowLoseScreenPopup()
   {
-    if (gameOver)
-    {
-      canvas.transform.GetChild(3).gameObject.SetActive(true);
-    }
-  }
-
-  void LoseCondition()
-  {
-    if (player.GetComponent<StackIncrease>().CoffeeCupAmount <= 0 && startLosing)
-    {
-      startLosing = false;
-      StartCoroutine(LoseScreenDelay());
-    }
-  }
-
-  IEnumerator LoseScreenDelay()
-  {
-    yield return new WaitForSeconds(1.5f);
-    gameOver = true;
+    canvas.transform.GetChild(3).gameObject.SetActive(true);
   }
 
   public void ObstacleSpawn()
