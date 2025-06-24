@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class PhysicMovement : MonoBehaviour
 {
-  [SerializeField][Range(-50, 50)] float decayCoefficient = -9;
-  [SerializeField] float mass = 1;
+  [SerializeField][Range(-50, 50)] float decayCoefficient = -1;
+  [SerializeField][Range(.01f, 100)] float mass = 1;
   public float Mass { get { return mass; } }
   public float3 Accelerate = 0;
   float3 _lastFrameVelocity = 0;
@@ -20,12 +20,6 @@ public class PhysicMovement : MonoBehaviour
   {
     var accelerate = CalculateAccelerateBy(lastFrameVelocity, isMoveForward);
     var v = lastFrameVelocity + accelerate * Time.deltaTime;
-    if (math.length(v) > GameManager.Instance.PlayerMaxSpeed)
-      v = math.normalize(v) * GameManager.Instance.PlayerMaxSpeed;
-    if (!isMoveForward && !math.normalize(v).Equals(math.normalize(lastFrameVelocity)))
-    {
-      v = 0;
-    }
     return v;
   }
 
@@ -43,11 +37,14 @@ public class PhysicMovement : MonoBehaviour
     return position;
   }
 
-  public void AddForce(
-    float3 accelerate
-  )
+  public void AddForce(float3 accelerate)
   {
     Accelerate = accelerate;
+  }
+
+  public void ApplyVelocity(float3 velocity)
+  {
+    _lastFrameVelocity = velocity;
   }
 
   public void DecayVelocity()
@@ -55,5 +52,7 @@ public class PhysicMovement : MonoBehaviour
     var FPS = 1 / Time.deltaTime;
     var r = 1 - math.pow(math.E, decayCoefficient / FPS);
     _lastFrameVelocity *= 1 - r;
+    if (math.lengthsq(_lastFrameVelocity) < .01f)
+      _lastFrameVelocity = 0;
   }
 }

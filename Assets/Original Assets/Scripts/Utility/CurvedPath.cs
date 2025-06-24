@@ -69,6 +69,11 @@ public class CurvedPath : MonoBehaviour
     return point;
   }
 
+  public Transform GetCurvedCenterControl()
+  {
+    return controls[0];
+  }
+
   public Vector3 GetCurvedStartPos()
   {
     return points[0].position;

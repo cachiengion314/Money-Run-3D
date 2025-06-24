@@ -28,7 +28,9 @@ public partial class StackIncrease : MonoBehaviour
     var tier = math.floor((float)cupStackParent.childCount / 4);
     Vector3 centerPos = curvedPath.GetCurvedStartPos();
     var verticalCenterPos = centerPos + tier * _verticalDeltaLength * Vector3.up;
-    curvedPath.GetCurvedEnd().position = verticalCenterPos + 1.0f * Vector3.up;
+    verticalCenterPos += 1.0f * Vector3.up;
+    curvedPath.GetCurvedEnd().position = verticalCenterPos;
+    curvedPath.GetCurvedCenterControl().position = verticalCenterPos;
 
     curvedPath.UpdateTotalLength();
   }
