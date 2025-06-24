@@ -33,6 +33,13 @@ public class PlayerBlockMovement : MonoBehaviour
       return;
     }
     ForwardMoving(false);
+
+    var curvedEnd = curvedPath.GetCurvedEnd();
+    if (curvedEnd.TryGetComponent<PhysicMovement>(out var movement))
+    {
+      movement.DecayVelocity();
+      curvedEnd.transform.position = movement.UpdatePosition(curvedEnd.transform.position);
+    }
   }
 
   float MapRange(float value, float fromMin, float fromMax, float toMin, float toMax)
@@ -106,7 +113,12 @@ public class PlayerBlockMovement : MonoBehaviour
       curvedStartPos.z
     );
     var dirToVerticalEnd = verticalEndPos - curvedEnd.position;
-    curvedEnd.transform.position += 12 * Time.deltaTime * dirToVerticalEnd;
+    if (curvedEnd.TryGetComponent<PhysicMovement>(out var movement))
+    {
+      movement.AddForce(dirToVerticalEnd);
+      curvedEnd.transform.position = movement.UpdatePosition(curvedEnd.transform.position);
+    }
+    // curvedEnd.transform.position += 12 * Time.deltaTime * dirToVerticalEnd;
 
     cupStack.UpdateCurvedPosCups();
   }
