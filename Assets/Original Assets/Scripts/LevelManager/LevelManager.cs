@@ -21,13 +21,13 @@ public partial class LevelManager : MonoBehaviour
     GameManager.Instance.levelNo = GameManager.Instance.CurrentLevelIndex;
     if (isSelectedMatchedCurrentLevel)
       GameManager.Instance.levelNo = levelSelected - 1;
-    LoadLevelFrom(GameManager.Instance.levelNo);
+    LoadLevelFrom(GameManager.Instance.levelNo + 1);
 
-    if (GameManager.Instance.levelNo >= GameManager.Instance.dataLevels.Count)
-    {
-      GameManager.Instance.levelNo = 0;
-      GameManager.Instance.CurrentLevelIndex = 0;
-    }
+    // if (GameManager.Instance.levelNo >= GameManager.Instance.dataLevels.Count)
+    // {
+    //   GameManager.Instance.levelNo = 0;
+    //   GameManager.Instance.CurrentLevelIndex = 0;
+    // }
     GameManager.totalGemAmount = PlayerPrefs.GetFloat("Total_Gem", 0);
 
     GameManager.Instance.levelNoDisplay.text

@@ -1,0 +1,141 @@
+{
+    "Index": 1,
+    "LevelObjsPaths": [
+        {
+            "RangePercentPosition": {
+                "x": 3.0,
+                "y": 6.0
+            },
+            "ItemsInRangeAmount": 3,
+            "LevelObjs": [
+                {
+                    "type": 4
+                }
+            ],
+            "IsRandomHorizontalPosition": true
+        },
+        {
+            "RangePercentPosition": {
+                "x": 8.0,
+                "y": 12.0
+            },
+            "ItemsInRangeAmount": 4,
+            "LevelObjs": [
+                {
+                    "type": 1
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "IsRandomHorizontalPosition": true
+        },
+        {
+            "RangePercentPosition": {
+                "x": 13.0,
+                "y": 20.0
+            },
+            "ItemsInRangeAmount": 7,
+            "LevelObjs": [
+                {
+                    "type": 2
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "IsRandomHorizontalPosition": true
+        },
+        {
+            "RangePercentPosition": {
+                "x": 21.0,
+                "y": 21.0
+            },
+            "ItemsInRangeAmount": 1,
+            "LevelObjs": [
+                {
+                    "type": 4
+                }
+            ],
+            "IsRandomHorizontalPosition": false
+        },
+        {
+            "RangePercentPosition": {
+                "x": 22.0,
+                "y": 30.0
+            },
+            "ItemsInRangeAmount": 8,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 2
+                }
+            ],
+            "IsRandomHorizontalPosition": true
+        },
+        {
+            "RangePercentPosition": {
+                "x": 37.0,
+                "y": 40.0
+            },
+            "ItemsInRangeAmount": 3,
+            "LevelObjs": [
+                {
+                    "type": 3
+                }
+            ],
+            "IsRandomHorizontalPosition": false
+        },
+        {
+            "RangePercentPosition": {
+                "x": 45.0,
+                "y": 55.0
+            },
+            "ItemsInRangeAmount": 5,
+            "LevelObjs": [
+                {
+                    "type": 4
+                },
+                {
+                    "type": 4
+                }
+            ],
+            "IsRandomHorizontalPosition": true
+        },
+        {
+            "RangePercentPosition": {
+                "x": 55.0,
+                "y": 90.0
+            },
+            "ItemsInRangeAmount": 8,
+            "LevelObjs": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 2
+                }
+            ],
+            "IsRandomHorizontalPosition": true
+        },
+        {
+            "RangePercentPosition": {
+                "x": 96.0,
+                "y": 99.0
+            },
+            "ItemsInRangeAmount": 4,
+            "LevelObjs": [
+                {
+                    "type": 1
+                },
+                {
+                    "type": 2
+                }
+            ],
+            "IsRandomHorizontalPosition": true
+        }
+    ],
+    "TotalLevelLength": 80.0
+}
