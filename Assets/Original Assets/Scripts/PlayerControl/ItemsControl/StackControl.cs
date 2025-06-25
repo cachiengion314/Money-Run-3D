@@ -31,7 +31,7 @@ public partial class StackIncrease : MonoBehaviour
         col.enabled = false;
       }
       cup.SetParent(null);
-      Destroy(cup.gameObject, 2.5f);
+      Destroy(cup.gameObject, 1.8f);
     }
     if (dropAmount > 0)
       UpdateCurvedPosCups();

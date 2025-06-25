@@ -22,7 +22,7 @@ public class LevelObj
 [Serializable]
 public class LevelObjsPath
 {
-  [Tooltip("X value of vector mean from position, Y value mean to position")]
+  [Tooltip("X value of this vector mean 'from position', Y value mean 'to position'")]
   public Vector2 RangePercentPosition;
   [Tooltip("The amount of items in RangePercentPosition, and the system will spawn items in vertical")]
   [Range(0, 100)]
@@ -67,7 +67,7 @@ public partial class LevelManager : MonoBehaviour
       levelInformation,
       "Resources/" + Constants.NAME_LEVEL_FILE + levelSelected
     );
-    print("Save successfully");
+    print("Save level successfully");
   }
 
   void FitBoxColliderToSplineMesh(SplineComputer splineComputer, float totalLength)
@@ -204,6 +204,6 @@ public partial class LevelManager : MonoBehaviour
     );
     if (levelInfo == null) { print("Level not existed!"); return; }
     levelInformation = levelInfo;
-    print("Load successfully");
+    print("Load level successfully");
   }
 }

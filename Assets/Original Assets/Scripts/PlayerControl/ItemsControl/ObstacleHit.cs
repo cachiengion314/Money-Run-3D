@@ -16,9 +16,11 @@ public class ObstacleHit : MonoBehaviour
       Instantiate(hittingEfx, col.gameObject.transform.position, Quaternion.identity);
 
       col.gameObject.GetComponent<IObstacle>().GoAway();
+      col.gameObject.GetComponent<Collider>().enabled = false;
       gameObject
         .GetComponent<PlayerPowerController>()
         .moneyAmount -= col.gameObject.GetComponent<IObstacle>().GetValue();
+      Destroy(col.gameObject, 1.8f);
 
       var player = GameManager.Instance.PlayerBlockMovement;
       player.IsHit = true;

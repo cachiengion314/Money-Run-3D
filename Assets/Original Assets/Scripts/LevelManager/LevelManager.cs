@@ -13,45 +13,43 @@ public partial class LevelManager : MonoBehaviour
   void Start()
   {
     Instance = this;
-
     curvedPath.BakingCurvedPath();
     SubscribeTouchEvent();
+    SetupCurrentLevel();
+  }
 
+  public void SetupCurrentLevel()
+  {
     GameManager.Instance.SetGameState(GameState.Pause);
     GameManager.Instance.levelNo = GameManager.Instance.CurrentLevelIndex;
     if (isSelectedMatchedCurrentLevel)
       GameManager.Instance.levelNo = levelSelected - 1;
-    LoadLevelFrom(GameManager.Instance.levelNo + 1);
 
-    // if (GameManager.Instance.levelNo >= GameManager.Instance.dataLevels.Count)
-    // {
-    //   GameManager.Instance.levelNo = 0;
-    //   GameManager.Instance.CurrentLevelIndex = 0;
-    // }
-    GameManager.totalGemAmount = PlayerPrefs.GetFloat("Total_Gem", 0);
+    LoadLevelFrom(GameManager.Instance.levelNo + 1);
+    SpawnLevelObjsFrom(levelInformation);
 
     GameManager.Instance.levelNoDisplay.text
       = string.Format("Level " + "{0:0}", GameManager.Instance.levelNo + 1);
-
-    SpawnLevelObjsFrom(levelInformation);
   }
 
   public void CheckLoseCondition()
   {
+    if (GameManager.Instance.GameState == GameState.Pause) return;
     if (
       GameManager.Instance.PlayerBlockMovement
         .GetComponent<StackIncrease>().CoffeeCupAmount <= 0
     )
     {
+      GameManager.Instance.SetGameState(GameState.Pause);
+
       GameManager.Instance.PlayerBlockMovement
         .GetComponentInChildren<Animator>()
         .SetTrigger("Dead");
       GameManager.Instance.PlayerBlockMovement
         .GetComponent<Collider>().enabled = false;
 
-      GameManager.Instance.SetGameState(GameState.Pause);
       DOVirtual.DelayedCall(
-        1.5f,
+        1.25f,
         () =>
         {
           GameManager.Instance.ShowLoseScreenPopup();

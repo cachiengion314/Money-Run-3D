@@ -17,6 +17,7 @@ public class StairClimbing : MonoBehaviour
       var player = GameManager.Instance.PlayerBlockMovement;
       player.GetComponentInChildren<Animator>().SetBool("IsIdle", true);
       GameManager.Instance.SetGameState(GameState.Pause);
+      player.GetComponent<StackIncrease>().DropAllCoffeeCups();
 
       print("Won the game ");
       StartCoroutine(nameof(Celebrating));

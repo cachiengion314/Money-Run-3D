@@ -14,7 +14,7 @@ public class BarrierControl : MonoBehaviour, IObstacle
   {
     var arr = new int[2] { -1, 1 };
     var coefficient = arr[Random.Range(0, arr.Length)];
-    rig.AddForce(100 * (
+    rig.AddForce(50 * (
         -2 * rig.transform.forward +
         5 * rig.transform.up +
         coefficient * 6 * rig.transform.right
