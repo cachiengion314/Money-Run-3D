@@ -4,7 +4,7 @@ using UnityEngine;
 public partial class StackIncrease : MonoBehaviour
 {
   [Header("Coffee Cup Control Center")]
-  readonly int _COFFEE_CUP_CAPACITY = 80;
+  readonly int _COFFEE_CUP_CAPACITY = 100;
   [SerializeField] Transform coffeeCupParent;
   public int CoffeeCupAmount { get { return coffeeCupParent.childCount; } }
   [SerializeField] CurvedPath curvedPath;
@@ -68,8 +68,10 @@ public partial class StackIncrease : MonoBehaviour
   public void DivideCoffeeCupsWith(int amount)
   {
     var newCupsAmount = (float)(coffeeCupParent.childCount / amount);
-    var _amount = (int)(coffeeCupParent.childCount - math.ceil(newCupsAmount));
-    DropCoffeeCups(_amount);
+    var _dropAmount = (int)(coffeeCupParent.childCount - math.ceil(newCupsAmount));
+    _dropAmount = math.min(_dropAmount, coffeeCupParent.childCount - 1);
+
+    DropCoffeeCups(_dropAmount);
   }
 
   public void MultiplyCoffeeCupsWith(int amount)
@@ -86,7 +88,6 @@ public partial class StackIncrease : MonoBehaviour
       var index = coffeeCupParent.childCount;
       if (coffeeCupParent.childCount >= _COFFEE_CUP_CAPACITY)
       {
-        UpdateCurvedEndPosition();
         return;
       }
       var cup = LevelManager.Instance.SpawnCoffeeCupAt(coffeeCupParent);
@@ -96,22 +97,6 @@ public partial class StackIncrease : MonoBehaviour
       }
       cup.transform.localPosition = CalculateLocalPosCupAt(index);
     }
-
-    UpdateCurvedEndPosition();
-  }
-
-  public void AddOneCoffeeCup()
-  {
-    if (coffeeCupParent.childCount >= _COFFEE_CUP_CAPACITY) return;
-
-    var index = coffeeCupParent.childCount;
-
-    var cup = LevelManager.Instance.SpawnCoffeeCupAt(coffeeCupParent);
-    if (cup.TryGetComponent<Collider>(out var col))
-    {
-      col.enabled = false;
-    }
-    cup.transform.localPosition = CalculateLocalPosCupAt(index);
 
     UpdateCurvedEndPosition();
   }
@@ -154,6 +139,6 @@ public partial class StackIncrease : MonoBehaviour
 
   void OnCollected()
   {
-    AddOneCoffeeCup();
+    AddCoffeeCupsWith(1);
   }
 }
