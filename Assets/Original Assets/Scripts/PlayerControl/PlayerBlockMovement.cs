@@ -10,7 +10,6 @@ public class PlayerBlockMovement : MonoBehaviour
   [SerializeField] CurvedPath curvedPath;
   [Header("Datas")]
   float _lastFrameVelocity;
-  public bool IsHit;
 
   private void Start()
   {
@@ -19,16 +18,18 @@ public class PlayerBlockMovement : MonoBehaviour
     curvedPath.BakingCurvedPath();
     cupStack.UpdateCurvedEndPosition();
 
-    cupStack.AddCoffeeCupsWith(4);
+    cupStack.AddCoffeeCupsWith(1);
   }
 
   void Update()
   {
     CalculateCurvedEnd();
     CalculateCurvedPosCups();
+  }
 
+  void FixedUpdate()
+  {
     if (GameManager.Instance.GameState != GameState.Gameplay) return;
-    if (IsHit) return;
     if (LevelManager.Instance.IsUserScreenTouching)
     {
       ForwardMoving(true);
@@ -110,7 +111,7 @@ public class PlayerBlockMovement : MonoBehaviour
     var dirToVerticalEnd = verticalEndPos - curvedEnd.position;
     if (curvedEnd.TryGetComponent<PhysicMovement>(out var curvedPhysic))
     {
-      curvedPhysic.AddForce(24 * dirToVerticalEnd);
+      curvedPhysic.AddForce(12 * dirToVerticalEnd);
       curvedEnd.transform.position = curvedPhysic.UpdatePosition(curvedEnd.transform.position);
     }
 
@@ -122,21 +123,7 @@ public class PlayerBlockMovement : MonoBehaviour
     var curvedEnd = curvedPath.GetCurvedEnd();
     if (!curvedEnd.TryGetComponent<PhysicMovement>(out var curvedPhysic)) return;
 
-    if (!LevelManager.Instance.IsUserScreenTouching)
-    {
-      curvedPhysic.DecayVelocity();
-      curvedEnd.transform.position = curvedPhysic.UpdatePosition(curvedEnd.transform.position);
-      return;
-    }
-
-    var curvedStartPos = curvedPath.GetCurvedStartPos();
-    var verticalEndPos = new Vector3(
-      curvedStartPos.x,
-      curvedStartPos.y + curvedPath.TotalLength,
-      curvedStartPos.z
-    );
-    var dirToVerticalEnd = verticalEndPos - curvedEnd.position;
-    curvedPhysic.ApplyVelocity(6 * dirToVerticalEnd);
+    curvedPhysic.DecayVelocity();
     curvedEnd.transform.position = curvedPhysic.UpdatePosition(curvedEnd.transform.position);
   }
 }

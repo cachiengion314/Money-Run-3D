@@ -42,7 +42,6 @@ public partial class LevelManager : MonoBehaviour
     if (GameManager.Instance.GameState != GameState.Gameplay) return;
 
     var player = GameManager.Instance.PlayerBlockMovement;
-    if (player.IsHit) { return; }
 
     var curentTouchPos = Camera.main.ScreenToViewportPoint(finger.ScreenPosition);
     player.LeftRightMovement(curentTouchPos);
@@ -51,8 +50,5 @@ public partial class LevelManager : MonoBehaviour
   public void TouchStop()
   {
     if (GameManager.Instance.GameState != GameState.Gameplay) return;
-
-    var player = GameManager.Instance.PlayerBlockMovement;
-    if (player.IsHit) { return; }
   }
 }

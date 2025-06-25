@@ -7,7 +7,7 @@ public class ObstacleHit : MonoBehaviour
   [Header("Effects")]
   [SerializeField] ParticleSystem hittingEfx;
 
-  private void OnCollisionEnter(Collision col)
+  private void OnTriggerEnter(Collider col)
   {
     if (col.gameObject.CompareTag("Obstacles"))
     {
@@ -23,17 +23,7 @@ public class ObstacleHit : MonoBehaviour
       Destroy(col.gameObject, 1.8f);
 
       var player = GameManager.Instance.PlayerBlockMovement;
-      player.IsHit = true;
       player.GetComponent<StackIncrease>().DropCoffeeCups(1);
-      characterAnim.SetBool("Hit", true);
-      StartCoroutine(nameof(PlayerMovingToPosition));
     }
-  }
-
-  IEnumerator PlayerMovingToPosition()
-  {
-    yield return null;
-    characterAnim.SetBool("Hit", false);
-    GameManager.Instance.PlayerBlockMovement.IsHit = false;
   }
 }
