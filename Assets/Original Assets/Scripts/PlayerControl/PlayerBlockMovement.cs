@@ -21,14 +21,11 @@ public class PlayerBlockMovement : MonoBehaviour
     cupStack.AddCoffeeCupsWith(1);
   }
 
-  void Update()
+  void FixedUpdate()
   {
     CalculateCurvedEnd();
     CalculateCurvedPosCups();
-  }
 
-  void FixedUpdate()
-  {
     if (GameManager.Instance.GameState != GameState.Gameplay) return;
     if (LevelManager.Instance.IsUserScreenTouching)
     {
@@ -56,22 +53,20 @@ public class PlayerBlockMovement : MonoBehaviour
   float CalculateVelocityBy(float lastFrameVelocity, bool isMoveForward)
   {
     var accelerate = CalculateAccelerateBy(lastFrameVelocity, isMoveForward);
-    var v = lastFrameVelocity + accelerate * Time.deltaTime;
+    var v = lastFrameVelocity + accelerate * Time.fixedDeltaTime;
     if (math.abs(v) > GameManager.Instance.PlayerMaxSpeed)
       v = math.sign(v) * GameManager.Instance.PlayerMaxSpeed;
     if (!isMoveForward && math.sign(v) != math.sign(lastFrameVelocity))
     {
       v = 0;
       // player stop moving event
-      var playerAnim = GetComponentInChildren<Animator>();
-      playerAnim.SetBool("IsIdle", true);
     }
     return v;
   }
 
   float CalculatePositionBy(float v, float lastFramePosition)
   {
-    var x = lastFramePosition + v * Time.deltaTime;
+    var x = lastFramePosition + v * Time.fixedDeltaTime;
     return x;
   }
 
@@ -82,7 +77,7 @@ public class PlayerBlockMovement : MonoBehaviour
 
     transform.position = new Vector3(x, transform.position.y, transform.position.z);
 
-    GetComponentInChildren<Animator>().speed = math.clamp(math.abs(currentVelocity), 0, 1);
+    GetComponentInChildren<Animator>().speed = math.clamp(math.abs(currentVelocity), 0.0f, 1);
     _lastFrameVelocity = currentVelocity;
   }
 

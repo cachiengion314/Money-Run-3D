@@ -6390,7 +6390,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxRate: 9999
   TargetFrameRate: 60
-  RunInEditor: 1
+  RunInEditor: 0
 --- !u!1 &314102968
 GameObject:
   m_ObjectHideFlags: 0

@@ -34,13 +34,13 @@ public class PhysicMovement : MonoBehaviour
   float3 CalculateVelocityBy(float3 lastFrameVelocity, bool isMoveForward)
   {
     var accelerate = CalculateAccelerateBy(lastFrameVelocity, isMoveForward);
-    var v = lastFrameVelocity + accelerate * Time.deltaTime;
+    var v = lastFrameVelocity + accelerate * Time.fixedDeltaTime;
     return v;
   }
 
   float3 CalculatePositionBy(float3 v, float3 lastFramePosition)
   {
-    var x = lastFramePosition + v * Time.deltaTime;
+    var x = lastFramePosition + v * Time.fixedDeltaTime;
     return x;
   }
 
