@@ -1,6 +1,4 @@
 using Dreamteck.Splines;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,8 +16,6 @@ public partial class GameManager : MonoBehaviour
   [Header("Dependencies")]
   GameState _gameState;
   public GameState GameState { get { return _gameState; } }
-  [SerializeField] SplineFollower splineFollower;
-  public SplineFollower SplineFollower { get { return splineFollower; } }
   public GameObject splineComputer;
   public SplineComputer spline;
   public static float totalGemAmount;
@@ -31,9 +27,6 @@ public partial class GameManager : MonoBehaviour
   public bool gainPower = false;
   public GameObject player;
   public GameObject canvas;
-  public bool hasWon = false;
-  public bool gameOver = false;
-  public bool startLosing = true;
   public GameObject powerDisplay;
   public Text powerDisplayText;
   public Text levelNoDisplay;
@@ -44,7 +37,6 @@ public partial class GameManager : MonoBehaviour
   public int levelNo;
   public float totalNumberOfStack;
   public float increamentBlockSpeed;
-  public GameObject[] dataObstacle;
 
   private void Awake()
   {
@@ -55,7 +47,6 @@ public partial class GameManager : MonoBehaviour
   private void Update()
   {
     LetUsStartTheGame();
-    currentGemCollected = gemWithStackMoney + gemByCompleteMap + gemByStar + gemWithIncome;
   }
 
   void LetUsStartTheGame()
@@ -83,12 +74,6 @@ public partial class GameManager : MonoBehaviour
   public void ShowLoseScreenPopup()
   {
     canvas.transform.GetChild(3).gameObject.SetActive(true);
-  }
-
-  IEnumerator DelayCountingStack()
-  {
-    yield return new WaitForSecondsRealtime(0.5f);
-    totalNumberOfStack = GameObject.FindGameObjectsWithTag("Uncollected").Length;
   }
 
   public void SetGameState(GameState gameState)

@@ -115,10 +115,10 @@
                 "x": 87.0,
                 "y": 93.0
             },
-            "ItemsInRangeAmount": 4,
+            "ItemsInRangeAmount": 2,
             "LevelObjs": [
                 {
-                    "type": 4
+                    "type": 0
                 },
                 {
                     "type": 4
@@ -131,7 +131,7 @@
                 "x": 96.0,
                 "y": 99.0
             },
-            "ItemsInRangeAmount": 4,
+            "ItemsInRangeAmount": 2,
             "LevelObjs": [
                 {
                     "type": 1

@@ -24,12 +24,6 @@ public partial class StackIncrease : MonoBehaviour
       );
       Instantiate(dollarEffect, dollarEffectPos, Quaternion.identity);
 
-      // Gain some money
-      gameObject
-        .GetComponent<PlayerPowerController>()
-        .moneyAmount += other.GetComponent<ICollectable>().GetValue();
-      gameObject.GetComponent<EndingCalculation>().stackCollected++;
-
       OnCollected();
 
       Destroy(other.gameObject);

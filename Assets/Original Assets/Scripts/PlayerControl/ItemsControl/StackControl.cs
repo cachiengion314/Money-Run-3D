@@ -4,7 +4,7 @@ using UnityEngine;
 public partial class StackIncrease : MonoBehaviour
 {
   [Header("Coffee Cup Control Center")]
-  readonly int _COFFEE_CUP_CAPACITY = 100;
+  public readonly int COFFEE_CUP_CAPACITY = 100;
   [SerializeField] Transform coffeeCupParent;
   public int CoffeeCupAmount { get { return coffeeCupParent.childCount; } }
   [SerializeField] CurvedPath curvedPath;
@@ -86,13 +86,13 @@ public partial class StackIncrease : MonoBehaviour
   public void AddCoffeeCupsWith(int amount)
   {
     UpdateCurvedEndPosition(
-      math.min(coffeeCupParent.childCount + amount, _COFFEE_CUP_CAPACITY)
+      math.min(coffeeCupParent.childCount + amount, COFFEE_CUP_CAPACITY)
     );
 
     for (int i = 0; i < amount; ++i)
     {
       var index = coffeeCupParent.childCount;
-      if (coffeeCupParent.childCount >= _COFFEE_CUP_CAPACITY)
+      if (coffeeCupParent.childCount >= COFFEE_CUP_CAPACITY)
       {
         return;
       }

@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Material
+  m_Name: ScaleObjMat
   m_Shader: {fileID: -6465566751694194690, guid: 10cee7ca3d7ac4645bb56df0014f9c5a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0

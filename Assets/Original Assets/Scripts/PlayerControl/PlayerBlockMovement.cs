@@ -1,6 +1,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public class PlayerBlockMovement : MonoBehaviour
 {
@@ -127,28 +128,45 @@ public class PlayerBlockMovement : MonoBehaviour
   {
     if (other.gameObject.CompareTag("EndOfPath"))
     {
-      var player = GameManager.Instance.PlayerBlockMovement;
-      player.GetComponentInChildren<Animator>().SetBool("IsIdle", true);
       GameManager.Instance.SetGameState(GameState.Pause);
-      player.GetComponent<StackIncrease>().DropAllCoffeeCups();
 
-      print("Won the game ");
-      StartCoroutine(nameof(Celebrating));
+      var capacity = cupStack.COFFEE_CUP_CAPACITY;
+      var givePeopleEachTime = 4;
+      var range = MapRange(cupStack.CoffeeCupAmount, 0, capacity, 0, capacity / givePeopleEachTime);
+      var targetPos = new Vector3(
+        transform.position.x - range, transform.position.y, transform.position.z
+      );
+      var deltaDuration = .25f;
+      var _timer = 0.0f;
+
+      transform
+        .DOMove(targetPos, range * deltaDuration)
+        .OnUpdate(() =>
+        {
+          _timer += Time.deltaTime;
+          if (_timer >= deltaDuration)
+          {
+            _timer = 0;
+            cupStack.DropCoffeeCups(givePeopleEachTime);
+          }
+        })
+        .SetEase(Ease.OutQuad)
+        .OnComplete(() =>
+        {
+          cupStack.DropCoffeeCups(givePeopleEachTime);
+          StartCoroutine(Celebrating());
+        });
     }
   }
 
   IEnumerator Celebrating()
   {
+    GetComponentInChildren<Animator>().SetBool("IsIdle", true);
     yield return new WaitForSeconds(0.5f);
 
     transform.rotation = Quaternion.Euler(0, 90, 0);
     GetComponentInChildren<Animator>().SetTrigger("Won");
 
-    StartCoroutine(nameof(DelayGameWinning));
-  }
-
-  IEnumerator DelayGameWinning()
-  {
     yield return new WaitForSeconds(3f);
     GameManager.Instance.ShowWinScreenPopup();
   }

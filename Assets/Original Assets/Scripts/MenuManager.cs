@@ -6,32 +6,20 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
   public static MenuManager instance;
-
-  //[SerializeField] private int immuneLevel;
   [SerializeField] private int valueLevel;
   [SerializeField] private int incomeLevel;
-
-  //public Text immuneLevelText;
   public Text valueLevelText;
   public Text incomeLevelText;
-
   [SerializeField] private List<int> immunePricePerLevel;
   [SerializeField] private List<int> valuePricePerLevel;
   [SerializeField] private List<int> incomePricePerLevel;
-
-  //public Text immunePriceText;
   public Text valuePriceText;
   public Text incomePriceText;
-
-  //public List<float> immunePerLevel;
   public List<float> valuePerLevel;
   public List<int> incomePerLevel;
-
   public int multiplierValue;
-
   public float incomePercentage;
   public float moneyStackMod;
-
   [SerializeField] private GameObject setting;
   private Animator settingAnim;
 
@@ -95,7 +83,6 @@ public class MenuManager : MonoBehaviour
     GameManager.totalGemAmount += GameManager.Instance.currentGemCollected * multiplierValue;
 
     GameManager.Instance.CurrentLevelIndex++;
-    // PlayerPrefs.SetInt("Level_Number", GameManager.Instance.levelNo);
     PlayerPrefs.SetFloat("Total_Gem", GameManager.totalGemAmount);
     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
   }
@@ -112,7 +99,6 @@ public class MenuManager : MonoBehaviour
     GameManager.Instance.levelNo++;
 
     GameManager.Instance.CurrentLevelIndex++;
-    // PlayerPrefs.SetInt("Level_Number", GameManager.Instance.levelNo);
 
     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
   }
@@ -123,7 +109,6 @@ public class MenuManager : MonoBehaviour
     GameManager.totalGemAmount += GameManager.Instance.currentGemCollected * multiplierValue;
 
     GameManager.Instance.CurrentLevelIndex++;
-    // PlayerPrefs.SetInt("Level_Number", GameManager.Instance.levelNo);
     PlayerPrefs.SetFloat("Total_Gem", GameManager.totalGemAmount);
     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
   }
