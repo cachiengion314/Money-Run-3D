@@ -18,8 +18,10 @@ public partial class StackIncrease : MonoBehaviour
 
   public void DropCoffeeCups(int dropAmount)
   {
-    var amount = math.max(0, coffeeCupParent.childCount - dropAmount);
-    for (int i = coffeeCupParent.childCount - 1; i >= amount; i--)
+    var remainAmount = math.max(0, coffeeCupParent.childCount - dropAmount);
+    UpdateCurvedEndPosition(math.max(1, remainAmount));
+
+    for (int i = coffeeCupParent.childCount - 1; i >= remainAmount; i--)
     {
       var cup = coffeeCupParent.GetChild(i);
       if (cup.TryGetComponent<PhysicMovement>(out var movement))
@@ -53,9 +55,9 @@ public partial class StackIncrease : MonoBehaviour
     }
   }
 
-  public void UpdateCurvedEndPosition()
+  public void UpdateCurvedEndPosition(int updatedCupCount)
   {
-    var tier = math.floor((float)coffeeCupParent.childCount / 4);
+    var tier = math.floor((float)updatedCupCount / 4);
     Vector3 centerPos = curvedPath.GetCurvedStartPos();
     var verticalCenterPos = centerPos + tier * _verticalDeltaLength * Vector3.up;
     verticalCenterPos += 1.0f * Vector3.up;
@@ -83,6 +85,10 @@ public partial class StackIncrease : MonoBehaviour
 
   public void AddCoffeeCupsWith(int amount)
   {
+    UpdateCurvedEndPosition(
+      math.min(coffeeCupParent.childCount + amount, _COFFEE_CUP_CAPACITY)
+    );
+
     for (int i = 0; i < amount; ++i)
     {
       var index = coffeeCupParent.childCount;
@@ -97,8 +103,6 @@ public partial class StackIncrease : MonoBehaviour
       }
       cup.transform.localPosition = CalculateLocalPosCupAt(index);
     }
-
-    UpdateCurvedEndPosition();
   }
 
   Vector3 CalculateLocalPosCupAt(int index)
