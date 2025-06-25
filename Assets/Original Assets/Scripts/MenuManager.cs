@@ -93,10 +93,7 @@ public class MenuManager : MonoBehaviour
     //Xem ads complete
     GameManager.Instance.levelNo++;
     GameManager.totalGemAmount += GameManager.Instance.currentGemCollected * multiplierValue;
-    if (GameManager.Instance.levelNo > GameManager.Instance.dataLevels.Count - 1)
-    {
-      GameManager.Instance.levelNo = 0;
-    }
+
     GameManager.Instance.CurrentLevelIndex++;
     // PlayerPrefs.SetInt("Level_Number", GameManager.Instance.levelNo);
     PlayerPrefs.SetFloat("Total_Gem", GameManager.totalGemAmount);
@@ -113,10 +110,7 @@ public class MenuManager : MonoBehaviour
   public void SkipButton()
   {
     GameManager.Instance.levelNo++;
-    if (GameManager.Instance.levelNo > GameManager.Instance.dataLevels.Count - 1)
-    {
-      GameManager.Instance.levelNo = 0;
-    }
+
     GameManager.Instance.CurrentLevelIndex++;
     // PlayerPrefs.SetInt("Level_Number", GameManager.Instance.levelNo);
 
@@ -127,10 +121,6 @@ public class MenuManager : MonoBehaviour
   {
     GameManager.Instance.levelNo++;
     GameManager.totalGemAmount += GameManager.Instance.currentGemCollected * multiplierValue;
-    if (GameManager.Instance.levelNo > GameManager.Instance.dataLevels.Count - 1)
-    {
-      GameManager.Instance.levelNo = 0;
-    }
 
     GameManager.Instance.CurrentLevelIndex++;
     // PlayerPrefs.SetInt("Level_Number", GameManager.Instance.levelNo);

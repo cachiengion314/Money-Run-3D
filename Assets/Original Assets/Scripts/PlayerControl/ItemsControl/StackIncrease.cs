@@ -9,10 +9,6 @@ using UnityEngine;
 public partial class StackIncrease : MonoBehaviour
 {
   [Header("Stack Increase Stuffs")]
-  [SerializeField] private GameObject stackPos;
-  [SerializeField] private GameObject moneyIndicator;
-  [SerializeField] private GameObject moneyIndicatorPos;
-  [SerializeField] private GameObject playerBlock;
   [Header("Effects")]
   [SerializeField] private GameObject dollarEffect;
 

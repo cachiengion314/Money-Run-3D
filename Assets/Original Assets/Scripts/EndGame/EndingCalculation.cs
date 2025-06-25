@@ -1,11 +1,8 @@
-using Dreamteck.Splines;
 using UnityEngine;
 
 public class EndingCalculation : MonoBehaviour
 {
   public float stackCollected;
-  [SerializeField] private GameObject invisibleTrack;
-  [SerializeField] private GameObject playerController;
 
   void Start()
   {

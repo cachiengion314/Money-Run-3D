@@ -1,5 +1,6 @@
 using Unity.Mathematics;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerBlockMovement : MonoBehaviour
 {
@@ -120,6 +121,36 @@ public class PlayerBlockMovement : MonoBehaviour
 
     curvedPhysic.DecayVelocity();
     curvedEnd.transform.position = curvedPhysic.UpdatePosition(curvedEnd.transform.position);
+  }
+
+  private void OnTriggerEnter(Collider other)
+  {
+    if (other.gameObject.CompareTag("EndOfPath"))
+    {
+      var player = GameManager.Instance.PlayerBlockMovement;
+      player.GetComponentInChildren<Animator>().SetBool("IsIdle", true);
+      GameManager.Instance.SetGameState(GameState.Pause);
+      player.GetComponent<StackIncrease>().DropAllCoffeeCups();
+
+      print("Won the game ");
+      StartCoroutine(nameof(Celebrating));
+    }
+  }
+
+  IEnumerator Celebrating()
+  {
+    yield return new WaitForSeconds(0.5f);
+
+    transform.rotation = Quaternion.Euler(0, 90, 0);
+    GetComponentInChildren<Animator>().SetTrigger("Won");
+
+    StartCoroutine(nameof(DelayGameWinning));
+  }
+
+  IEnumerator DelayGameWinning()
+  {
+    yield return new WaitForSeconds(3f);
+    GameManager.Instance.ShowWinScreenPopup();
   }
 }
 

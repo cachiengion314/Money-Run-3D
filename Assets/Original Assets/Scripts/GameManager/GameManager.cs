@@ -43,10 +43,8 @@ public partial class GameManager : MonoBehaviour
   public GameObject cameraFollowPoint;
   public int levelNo;
   public float totalNumberOfStack;
-  public GameObject stackPos;
   public float increamentBlockSpeed;
   public GameObject[] dataObstacle;
-  public List<GameObject> dataLevels;
 
   private void Awake()
   {
@@ -85,16 +83,6 @@ public partial class GameManager : MonoBehaviour
   public void ShowLoseScreenPopup()
   {
     canvas.transform.GetChild(3).gameObject.SetActive(true);
-  }
-
-  public void ObstacleSpawn()
-  {
-    Instantiate(
-      dataLevels[levelNo],
-      dataLevels[levelNo].transform.position,
-      dataLevels[levelNo].transform.rotation
-    );
-    StartCoroutine(DelayCountingStack());
   }
 
   IEnumerator DelayCountingStack()

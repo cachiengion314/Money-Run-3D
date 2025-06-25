@@ -47,8 +47,6 @@ public partial class GameManager : MonoBehaviour
   }
 
   [Header("Player settings")]
-  [SerializeField] PlayerControl playerControl;
-  public PlayerControl PlayerControl { get { return playerControl; } }
   [SerializeField] PlayerBlockMovement playerBlockMovement;
   public PlayerBlockMovement PlayerBlockMovement { get { return playerBlockMovement; } }
   [Range(1, 35)][SerializeField] float playerMaxSpeed;
