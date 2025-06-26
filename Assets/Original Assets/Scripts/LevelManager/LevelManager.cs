@@ -37,7 +37,7 @@ public partial class LevelManager : MonoBehaviour
     if (GameManager.Instance.GameState == GameState.Pause) return;
     if (
       GameManager.Instance.PlayerBlockMovement
-        .GetComponent<StackIncrease>().CoffeeCupAmount <= 0
+        .GetComponent<StackControl>().CoffeeCupAmount <= 0
     )
     {
       GameManager.Instance.SetGameState(GameState.Pause);

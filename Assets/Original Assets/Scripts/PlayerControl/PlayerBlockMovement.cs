@@ -1,13 +1,11 @@
 using Unity.Mathematics;
 using UnityEngine;
-using System.Collections;
-using DG.Tweening;
 
-public class PlayerBlockMovement : MonoBehaviour
+public partial class PlayerBlockMovement : MonoBehaviour
 {
   public static PlayerBlockMovement instance;
   [Header("Player Block Movement Dependencies")]
-  [SerializeField] StackIncrease cupStack;
+  [SerializeField] StackControl stackControl;
   [SerializeField] Transform player;
   [SerializeField] CurvedPath curvedPath;
   [Header("Datas")]
@@ -18,9 +16,9 @@ public class PlayerBlockMovement : MonoBehaviour
     instance = this;
     _lastFrameVelocity = 0;
     curvedPath.BakingCurvedPath();
-    cupStack.UpdateCurvedEndPosition(1);
+    stackControl.UpdateCurvedEndPosition(1);
 
-    cupStack.AddCoffeeCupsWith(1);
+    stackControl.AddCoffeeCupsBy(1);
   }
 
   void FixedUpdate()
@@ -112,7 +110,7 @@ public class PlayerBlockMovement : MonoBehaviour
       curvedEnd.transform.position = curvedPhysic.UpdatePosition(curvedEnd.transform.position);
     }
 
-    cupStack.UpdateCurvedPosCups();
+    stackControl.UpdateCurvedPosCups();
   }
 
   public void CalculateCurvedEnd()
@@ -122,53 +120,6 @@ public class PlayerBlockMovement : MonoBehaviour
 
     curvedPhysic.DecayVelocity();
     curvedEnd.transform.position = curvedPhysic.UpdatePosition(curvedEnd.transform.position);
-  }
-
-  private void OnTriggerEnter(Collider other)
-  {
-    if (other.gameObject.CompareTag("EndOfPath"))
-    {
-      GameManager.Instance.SetGameState(GameState.Pause);
-
-      var capacity = cupStack.COFFEE_CUP_CAPACITY;
-      var givePeopleEachTime = 4;
-      var range = MapRange(cupStack.CoffeeCupAmount, 0, capacity, 0, capacity / givePeopleEachTime);
-      var targetPos = new Vector3(
-        transform.position.x - range, transform.position.y, transform.position.z
-      );
-      var deltaDuration = .25f;
-      var _timer = 0.0f;
-
-      transform
-        .DOMove(targetPos, range * deltaDuration)
-        .OnUpdate(() =>
-        {
-          _timer += Time.deltaTime;
-          if (_timer >= deltaDuration)
-          {
-            _timer = 0;
-            cupStack.DropCoffeeCups(givePeopleEachTime);
-          }
-        })
-        .SetEase(Ease.OutQuad)
-        .OnComplete(() =>
-        {
-          cupStack.DropCoffeeCups(givePeopleEachTime);
-          StartCoroutine(Celebrating());
-        });
-    }
-  }
-
-  IEnumerator Celebrating()
-  {
-    GetComponentInChildren<Animator>().SetBool("IsIdle", true);
-    yield return new WaitForSeconds(0.5f);
-
-    transform.rotation = Quaternion.Euler(0, 90, 0);
-    GetComponentInChildren<Animator>().SetTrigger("Won");
-
-    yield return new WaitForSeconds(3f);
-    GameManager.Instance.ShowWinScreenPopup();
   }
 }
 

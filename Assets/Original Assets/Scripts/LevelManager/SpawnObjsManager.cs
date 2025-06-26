@@ -8,6 +8,27 @@ public partial class LevelManager : MonoBehaviour
   [SerializeField] GameObject barrierBarPref;
   [SerializeField] GameObject helmetPref;
   [SerializeField] GameObject powerPortal;
+  [SerializeField] GameObject dollarEffect;
+  [SerializeField] GameObject hittingEfx;
+  [SerializeField] ParticleSystem powerUpEfx;
+
+  public ParticleSystem SpawnPowerUpEfxAt(float3 pos)
+  {
+    var efx = Instantiate(powerUpEfx, pos, powerUpEfx.transform.rotation);
+    return efx;
+  }
+
+  public GameObject SpawnHittingEfxAt(float3 pos)
+  {
+    var efx = Instantiate(hittingEfx, pos, hittingEfx.transform.rotation);
+    return efx;
+  }
+
+  public GameObject SpawnDollarEffectAt(float3 pos)
+  {
+    var efx = Instantiate(dollarEffect, pos, dollarEffect.transform.rotation);
+    return efx;
+  }
 
   public GameObject SpawnCoffeeCupAt(float3 pos)
   {

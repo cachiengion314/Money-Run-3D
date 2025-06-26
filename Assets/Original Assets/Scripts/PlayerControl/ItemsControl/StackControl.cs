@@ -1,7 +1,12 @@
 using Unity.Mathematics;
 using UnityEngine;
 
-public partial class StackIncrease : MonoBehaviour
+//电子邮件puhalskijsemen@gmail.com
+//源码网站 开vpn全局模式打开 http://web3incubators.com/
+//电报https://t.me/gamecode999
+//网页客服 http://web3incubators.com/kefu.html
+
+public partial class StackControl : MonoBehaviour
 {
   [Header("Coffee Cup Control Center")]
   public readonly int COFFEE_CUP_CAPACITY = 100;
@@ -13,10 +18,10 @@ public partial class StackIncrease : MonoBehaviour
 
   public void DropAllCoffeeCups()
   {
-    DropCoffeeCups(coffeeCupParent.childCount);
+    DropCoffeeCupsBy(coffeeCupParent.childCount);
   }
 
-  public void DropCoffeeCups(int dropAmount)
+  public void DropCoffeeCupsBy(int dropAmount)
   {
     var remainAmount = math.max(0, coffeeCupParent.childCount - dropAmount);
     UpdateCurvedEndPosition(math.max(1, remainAmount));
@@ -39,6 +44,44 @@ public partial class StackIncrease : MonoBehaviour
       UpdateCurvedPosCups();
 
     LevelManager.Instance.CheckLoseCondition();
+  }
+
+  public void DivideCoffeeCupsBy(int amount)
+  {
+    var newCupsAmount = (float)(coffeeCupParent.childCount / amount);
+    var _dropAmount = (int)(coffeeCupParent.childCount - math.ceil(newCupsAmount));
+    _dropAmount = math.min(_dropAmount, coffeeCupParent.childCount - 1);
+
+    DropCoffeeCupsBy(_dropAmount);
+  }
+
+  public void MultiplyCoffeeCupsBy(int amount)
+  {
+    var newCupsAmount = coffeeCupParent.childCount * amount;
+    var additionAmount = newCupsAmount - coffeeCupParent.childCount;
+    AddCoffeeCupsBy(additionAmount);
+  }
+
+  public void AddCoffeeCupsBy(int amount)
+  {
+    UpdateCurvedEndPosition(
+      math.min(coffeeCupParent.childCount + amount, COFFEE_CUP_CAPACITY)
+    );
+
+    for (int i = 0; i < amount; ++i)
+    {
+      var index = coffeeCupParent.childCount;
+      if (coffeeCupParent.childCount >= COFFEE_CUP_CAPACITY)
+      {
+        return;
+      }
+      var cup = LevelManager.Instance.SpawnCoffeeCupAt(coffeeCupParent);
+      if (cup.TryGetComponent<Collider>(out var col))
+      {
+        col.enabled = false;
+      }
+      cup.transform.localPosition = CalculateLocalPosCupAt(index);
+    }
   }
 
   public void UpdateCurvedPosCups()
@@ -65,44 +108,6 @@ public partial class StackIncrease : MonoBehaviour
     curvedPath.GetCurvedCenterControl().position = verticalCenterPos;
 
     curvedPath.UpdateTotalLength();
-  }
-
-  public void DivideCoffeeCupsWith(int amount)
-  {
-    var newCupsAmount = (float)(coffeeCupParent.childCount / amount);
-    var _dropAmount = (int)(coffeeCupParent.childCount - math.ceil(newCupsAmount));
-    _dropAmount = math.min(_dropAmount, coffeeCupParent.childCount - 1);
-
-    DropCoffeeCups(_dropAmount);
-  }
-
-  public void MultiplyCoffeeCupsWith(int amount)
-  {
-    var newCupsAmount = coffeeCupParent.childCount * amount;
-    var additionAmount = newCupsAmount - coffeeCupParent.childCount;
-    AddCoffeeCupsWith(additionAmount);
-  }
-
-  public void AddCoffeeCupsWith(int amount)
-  {
-    UpdateCurvedEndPosition(
-      math.min(coffeeCupParent.childCount + amount, COFFEE_CUP_CAPACITY)
-    );
-
-    for (int i = 0; i < amount; ++i)
-    {
-      var index = coffeeCupParent.childCount;
-      if (coffeeCupParent.childCount >= COFFEE_CUP_CAPACITY)
-      {
-        return;
-      }
-      var cup = LevelManager.Instance.SpawnCoffeeCupAt(coffeeCupParent);
-      if (cup.TryGetComponent<Collider>(out var col))
-      {
-        col.enabled = false;
-      }
-      cup.transform.localPosition = CalculateLocalPosCupAt(index);
-    }
   }
 
   Vector3 CalculateLocalPosCupAt(int index)
@@ -141,8 +146,8 @@ public partial class StackIncrease : MonoBehaviour
     return localPos + verticalCenterLocalPos;
   }
 
-  void OnCollected()
+  public void OnCollected()
   {
-    AddCoffeeCupsWith(1);
+    AddCoffeeCupsBy(1);
   }
 }

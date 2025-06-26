@@ -39,9 +39,8 @@ public class EndingCalculation : MonoBehaviour
 
   void CalculateGemByCompleteMap()
   {
-    float stackMoneyAmount = gameObject.GetComponent<PlayerPowerController>().moneyAmount;
-    float stackMultiplier = 0f;
-
+    float stackMoneyAmount = 0;
+    float stackMultiplier;
     if (stackMoneyAmount < 1500)
     {
       stackMultiplier = 1;
