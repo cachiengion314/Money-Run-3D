@@ -9,10 +9,21 @@ public partial class LevelManager : MonoBehaviour
   public CurvedPath CurvedPath { get { return curvedPath; } }
   [SerializeField] SplineComputer splineComputer;
   [SerializeField] BoxCollider endOfPathCollider;
+  [Header("Player settings")]
+  [SerializeField] PlayerControl playerControl;
+  public PlayerControl PlayerControl { get { return playerControl; } }
+  [Range(1, 35)][SerializeField] float playerMaxSpeed;
+  public float PlayerMaxSpeed { get { return playerMaxSpeed; } }
+
+  void Awake()
+  {
+    if (Instance == null)
+      Instance = this;
+    else Destroy(gameObject);
+  }
 
   void Start()
   {
-    Instance = this;
     curvedPath.BakingCurvedPath();
     SubscribeTouchEvent();
     SetupCurrentLevel();
@@ -35,17 +46,14 @@ public partial class LevelManager : MonoBehaviour
   public void CheckLoseCondition()
   {
     if (GameManager.Instance.GameState == GameState.Pause) return;
-    if (
-      GameManager.Instance.PlayerBlockMovement
-        .GetComponent<StackControl>().CoffeeCupAmount <= 0
-    )
+    if (PlayerControl.GetComponent<StackControl>().CoffeeCupAmount <= 0)
     {
       GameManager.Instance.SetGameState(GameState.Pause);
 
-      GameManager.Instance.PlayerBlockMovement
+      PlayerControl
         .GetComponentInChildren<Animator>()
         .SetTrigger("Dead");
-      GameManager.Instance.PlayerBlockMovement
+      PlayerControl
         .GetComponent<Collider>().enabled = false;
 
       DOVirtual.DelayedCall(

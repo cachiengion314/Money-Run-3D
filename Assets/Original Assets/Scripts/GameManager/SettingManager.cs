@@ -46,18 +46,12 @@ public partial class GameManager : MonoBehaviour
     }
   }
 
-  [Header("Player settings")]
-  [SerializeField] PlayerBlockMovement playerBlockMovement;
-  public PlayerBlockMovement PlayerBlockMovement { get { return playerBlockMovement; } }
-  [Range(1, 35)][SerializeField] float playerMaxSpeed;
-  public float PlayerMaxSpeed { get { return playerMaxSpeed; } }
-
   void InitUserData()
   {
     var isSoundInt = PlayerPrefs.GetInt(Constants.KEY_IS_SOUND_ON, 1);
-    _isSoundOn = isSoundInt == 1 ? true : false;
+    _isSoundOn = isSoundInt == 1;
     var isHapticInt = PlayerPrefs.GetInt(Constants.KEY_IS_HAPTIC_ON, 1);
-    _isHapticOn = isHapticInt == 1 ? true : false;
+    _isHapticOn = isHapticInt == 1;
 
     _currentLevelIndex = PlayerPrefs.GetInt(Constants.KEY_CURRENT_LVL_INDEX, 0);
   }

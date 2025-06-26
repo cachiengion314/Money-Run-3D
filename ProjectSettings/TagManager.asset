@@ -8,6 +8,8 @@ TagManager:
   - Uncollected
   - PowerPortal
   - EndOfPath
+  - Multiplier
+  - VictoryBlock
   layers:
   - Default
   - TransparentFX

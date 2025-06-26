@@ -45,6 +45,9 @@ public class LevelInformation
 public partial class LevelManager : MonoBehaviour
 {
   [Header("Spawn Level Objects")]
+  public Color[] CrowdColors;
+  VictoryBlockControl[] _victoryBlocks;
+  public VictoryBlockControl[] VictoryBlocks { get { return _victoryBlocks; } }
   [SerializeField] Transform levelObjsParent;
   [SerializeField] LevelInformation levelInformation;
   [Space(10)]
@@ -59,13 +62,23 @@ public partial class LevelManager : MonoBehaviour
     LoadLevelFrom(levelSelected);
   }
 
+  public void LoadLevelFrom(int level)
+  {
+    var levelInfo = HoangNam.SaveSystem.Load<LevelInformation>(
+      "Resources/Levels/" + Constants.NAME_LEVEL_FILE + level
+    );
+    if (levelInfo == null) { print("This level is not existed!"); return; }
+    levelInformation = levelInfo;
+    print("Load level successfully");
+  }
+
   [NaughtyAttributes.Button]
   void SaveLevel()
   {
     levelInformation.Index = levelSelected - 1;
     HoangNam.SaveSystem.Save(
       levelInformation,
-      "Resources/" + Constants.NAME_LEVEL_FILE + levelSelected
+      "Resources/Levels/" + Constants.NAME_LEVEL_FILE + levelSelected
     );
     print("Save level successfully");
   }
@@ -96,6 +109,10 @@ public partial class LevelManager : MonoBehaviour
     splineComputer.SetPointPosition(1, targetPos);
     FitBoxColliderToSplineMesh(splineComputer, totalLevelLength);
 
+    var victoryBlockAmount = 15;
+    _victoryBlocks = new VictoryBlockControl[victoryBlockAmount];
+    SpawnVictoryBlocksAt(targetPos + 1 * Vector3.left, victoryBlockAmount);
+
     for (int i = 0; i < levelObjsPaths.Length; ++i)
     {
       var path = levelObjsPaths[i];
@@ -104,15 +121,17 @@ public partial class LevelManager : MonoBehaviour
       {
         float deltaLength = (range.y - range.x) / path.ItemsInRangeAmount;
         for (int j = 0; j < path.ItemsInRangeAmount; ++j)
-          SpawnObjsAt(range.x + j * deltaLength, path.LevelObjs, path.IsRandomHorizontalPosition);
+          SpawnHorizontalObjsAt(
+            range.x + j * deltaLength, path.LevelObjs, path.IsRandomHorizontalPosition
+          );
         continue;
       }
 
-      SpawnObjsAt(range.x, path.LevelObjs, path.IsRandomHorizontalPosition);
+      SpawnHorizontalObjsAt(range.x, path.LevelObjs, path.IsRandomHorizontalPosition);
     }
   }
 
-  void SpawnObjsAt(float percentPosition, LevelObj[] levelObjs, bool _isRandomPos = false)
+  void SpawnHorizontalObjsAt(float percentPosition, LevelObj[] levelObjs, bool _isRandomPos = false)
   {
     var percent = (float)percentPosition / 100;
     var centerPos = curvedPath.FindCurvedPosAt(percent);
@@ -197,13 +216,26 @@ public partial class LevelManager : MonoBehaviour
     }
   }
 
-  public void LoadLevelFrom(int level)
+  Color GetRandomCrowdColor()
   {
-    var levelInfo = HoangNam.SaveSystem.Load<LevelInformation>(
-      "Resources/" + Constants.NAME_LEVEL_FILE + level
-    );
-    if (levelInfo == null) { print("Level not existed!"); return; }
-    levelInformation = levelInfo;
-    print("Load level successfully");
+    return CrowdColors[UnityEngine.Random.Range(0, CrowdColors.Length)];
+  }
+
+  void SpawnVictoryBlocksAt(Vector3 pos, int amount)
+  {
+    for (int i = 0; i < amount; ++i)
+    {
+      var vicBlock = SpawnVictoryBlockAt(levelObjsParent);
+      var targetPos = pos + 2 * i * Vector3.left;
+      vicBlock.transform.position = targetPos;
+
+      for (int j = 0; j < vicBlock.CrowdPeople.Length; ++j)
+      {
+        vicBlock.ChangeToSadAnimFor(j);
+        vicBlock.SetPersonColorFor(j, GetRandomCrowdColor());
+      }
+
+      _victoryBlocks[i] = vicBlock;
+    }
   }
 }

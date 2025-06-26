@@ -7,20 +7,19 @@ public class CameraFollow : MonoBehaviour
 
   void Start()
   {
-    _playerOffset
-      = transform.position - GameManager.Instance.PlayerBlockMovement.transform.position;
+    _playerOffset = transform.position - LevelManager.Instance.PlayerControl.transform.position;
   }
 
   void Update()
   {
     var curvedPos = LevelManager.Instance.CurvedPath.FindCurvedPosAt(
-      GameManager.Instance.PlayerBlockMovement.transform.position
+      LevelManager.Instance.PlayerControl.transform.position
     );
 
     transform.position
       = new Vector3(
-        GameManager.Instance.PlayerBlockMovement.transform.position.x + _playerOffset.x,
-        GameManager.Instance.PlayerBlockMovement.transform.position.y + _playerOffset.y,
+        LevelManager.Instance.PlayerControl.transform.position.x + _playerOffset.x,
+        LevelManager.Instance.PlayerControl.transform.position.y + _playerOffset.y,
         curvedPos.z + _playerOffset.z
       );
   }

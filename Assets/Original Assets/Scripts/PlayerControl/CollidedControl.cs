@@ -2,102 +2,47 @@ using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
-public partial class PlayerBlockMovement : MonoBehaviour
+public partial class PlayerControl : MonoBehaviour
 {
   void OnTriggerEnter(Collider other)
   {
     if (other.gameObject.CompareTag("EndOfPath"))
     {
-      SoundManager.instance.PlayHittingSfx();
-
-      GameManager.Instance.SetGameState(GameState.Pause);
-      InvokeVictoryRun();
+      OnCollidedEndOfPath(other);
     }
-
-    if (other.gameObject.CompareTag("Uncollected"))
+    else if (other.gameObject.CompareTag("Uncollected"))
     {
-      var dollarEffectPos = new Vector3(
-        other.gameObject.transform.position.x,
-        0,
-        other.gameObject.transform.position.z
-      );
-      LevelManager.Instance.SpawnDollarEffectAt(dollarEffectPos);
-
-      stackControl.OnCollected();
-
-      Destroy(other.gameObject);
+      OnCollidedUncollected(other);
     }
-
-    if (other.gameObject.CompareTag("Obstacles"))
+    else if (other.gameObject.CompareTag("Obstacles"))
     {
-      //minus some Money on Player
-      SoundManager.instance.PlayHittingSfx();
-
-      LevelManager.Instance.SpawnHittingEfxAt(other.gameObject.transform.position);
-
-      other.gameObject.GetComponent<IObstacle>().GoAway();
-      other.gameObject.GetComponent<Collider>().enabled = false;
-      Destroy(other.gameObject, 1.8f);
-
-      GetComponent<StackControl>().DropCoffeeCupsBy(1);
+      OnCollidedObstacle(other);
     }
-
-    if (other.gameObject.CompareTag("PowerPortal"))
+    else if (other.gameObject.CompareTag("PowerPortal"))
     {
-      SoundManager.instance.PlayHittingSfx();
-
-      LevelManager.Instance.SpawnPowerUpEfxAt(other.transform.position);
-      other.GetComponent<Collider>().enabled = false;
-
-      var _operator = other.GetComponent<PowerPortalControl>().Operator;
-      var _mathNumber = other.GetComponent<PowerPortalControl>().MathNumber;
-
-      var player = GameManager.Instance.PlayerBlockMovement;
-      if (_operator == MathOperator.Plus)
-      {
-        player.GetComponent<StackControl>().AddCoffeeCupsBy(_mathNumber);
-      }
-      else if (_operator == MathOperator.Minus)
-      {
-        player.GetComponent<StackControl>().DropCoffeeCupsBy(_mathNumber);
-      }
-      else if (_operator == MathOperator.Multiple)
-      {
-        player.GetComponent<StackControl>().MultiplyCoffeeCupsBy(_mathNumber);
-      }
-      else if (_operator == MathOperator.Divide)
-      {
-        player.GetComponent<StackControl>().DivideCoffeeCupsBy(_mathNumber);
-      }
+      OnCollidedPowerPortal(other);
+    }
+    else if (other.gameObject.CompareTag("VictoryBlock"))
+    {
+      OnCollidedVictoryBlock(other.GetComponent<VictoryBlockControl>());
     }
   }
 
   void InvokeVictoryRun()
   {
-    var capacity = stackControl.COFFEE_CUP_CAPACITY;
+    var capacity = stackControl.STACK_CAPACITY;
     var givePeopleEachTime = 4;
     var range = MapRange(stackControl.CoffeeCupAmount, 0, capacity, 0, capacity / givePeopleEachTime);
     var targetPos = new Vector3(
       transform.position.x - range, transform.position.y, transform.position.z
     );
-    var deltaDuration = .2f;
-    var _timer = 0.0f;
+    var deltaDuration = .25f;
 
     transform
       .DOMove(targetPos, range * deltaDuration)
-      .OnUpdate(() =>
-      {
-        _timer += Time.deltaTime;
-        if (_timer >= deltaDuration)
-        {
-          _timer = 0;
-          stackControl.DropCoffeeCupsBy(givePeopleEachTime);
-        }
-      })
       .SetEase(Ease.Linear)
       .OnComplete(() =>
       {
-        stackControl.DropAllCoffeeCups();
         StartCoroutine(Celebrating());
       });
   }
@@ -112,5 +57,90 @@ public partial class PlayerBlockMovement : MonoBehaviour
 
     yield return new WaitForSeconds(2.2f);
     GameManager.Instance.ShowWinScreenPopup();
+  }
+
+  void OnCollidedEndOfPath(Collider other)
+  {
+    SoundManager.Instance.PlayHittingSfx();
+
+    GameManager.Instance.SetGameState(GameState.Pause);
+    InvokeVictoryRun();
+  }
+
+  void OnCollidedVictoryBlock(VictoryBlockControl victoryBlockControl)
+  {
+    for (int i = 0; i < victoryBlockControl.CrowdPeople.Length; i++)
+    {
+      victoryBlockControl.ChangeToCheeringAnimFor(i);
+      var rightHand = victoryBlockControl.GetRightHandFor(i);
+      // print("OnCollidedVictoryBlock.i " + i);
+      var coffeeCups = stackControl.GetCoffeeCupsBy(2);
+      for (int j = 0; j < coffeeCups.Count; ++j)
+      {
+        var cup = coffeeCups[j];
+        cup.transform
+          .DOMove(rightHand.transform.position, .2f)
+          .OnComplete(() =>
+          {
+            cup.SetParent(rightHand);
+          });
+      }
+      // Debug.Break();
+    }
+  }
+
+  void OnCollidedPowerPortal(Collider other)
+  {
+    SoundManager.Instance.PlayHittingSfx();
+
+    LevelManager.Instance.SpawnPowerUpEfxAt(other.transform.position);
+    other.GetComponent<Collider>().enabled = false;
+
+    var _operator = other.GetComponent<PowerPortalControl>().Operator;
+    var _mathNumber = other.GetComponent<PowerPortalControl>().MathNumber;
+
+    if (_operator == MathOperator.Plus)
+    {
+      GetComponent<StackControl>().AddCoffeeCupsBy(_mathNumber);
+    }
+    else if (_operator == MathOperator.Minus)
+    {
+      GetComponent<StackControl>().DropCoffeeCupsBy(_mathNumber);
+    }
+    else if (_operator == MathOperator.Multiple)
+    {
+      GetComponent<StackControl>().MultiplyCoffeeCupsBy(_mathNumber);
+    }
+    else if (_operator == MathOperator.Divide)
+    {
+      GetComponent<StackControl>().DivideCoffeeCupsBy(_mathNumber);
+    }
+  }
+
+  void OnCollidedObstacle(Collider other)
+  {
+    SoundManager.Instance.PlayHittingSfx();
+
+    LevelManager.Instance.SpawnHittingEfxAt(other.gameObject.transform.position);
+
+    other.gameObject.GetComponent<IObstacle>().GoAway();
+    other.gameObject.GetComponent<Collider>().enabled = false;
+    Destroy(other.gameObject, 1.8f);
+
+    GetComponent<StackControl>().DropCoffeeCupsBy(1);
+  }
+
+  void OnCollidedUncollected(Collider other)
+  {
+    var dollarEffectPos = new Vector3(
+     other.gameObject.transform.position.x,
+     0,
+     other.gameObject.transform.position.z
+   );
+    LevelManager.Instance.SpawnDollarEffectAt(dollarEffectPos);
+
+    stackControl.OnCollected();
+
+    Destroy(other.gameObject);
   }
 }

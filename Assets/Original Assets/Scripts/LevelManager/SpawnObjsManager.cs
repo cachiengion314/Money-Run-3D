@@ -8,9 +8,22 @@ public partial class LevelManager : MonoBehaviour
   [SerializeField] GameObject barrierBarPref;
   [SerializeField] GameObject helmetPref;
   [SerializeField] GameObject powerPortal;
-  [SerializeField] GameObject dollarEffect;
-  [SerializeField] GameObject hittingEfx;
+  [SerializeField] ParticleSystem dollarEffect;
+  [SerializeField] ParticleSystem hittingEfx;
   [SerializeField] ParticleSystem powerUpEfx;
+  [SerializeField] VictoryBlockControl victoryBlockPref;
+
+  public VictoryBlockControl SpawnVictoryBlockAt(Transform parent)
+  {
+    var obj = Instantiate(victoryBlockPref, parent);
+    return obj;
+  }
+
+  public VictoryBlockControl SpawnVictoryBlockAt(float3 pos)
+  {
+    var obj = Instantiate(victoryBlockPref, pos, victoryBlockPref.transform.rotation);
+    return obj;
+  }
 
   public ParticleSystem SpawnPowerUpEfxAt(float3 pos)
   {
@@ -18,13 +31,13 @@ public partial class LevelManager : MonoBehaviour
     return efx;
   }
 
-  public GameObject SpawnHittingEfxAt(float3 pos)
+  public ParticleSystem SpawnHittingEfxAt(float3 pos)
   {
     var efx = Instantiate(hittingEfx, pos, hittingEfx.transform.rotation);
     return efx;
   }
 
-  public GameObject SpawnDollarEffectAt(float3 pos)
+  public ParticleSystem SpawnDollarEffectAt(float3 pos)
   {
     var efx = Instantiate(dollarEffect, pos, dollarEffect.transform.rotation);
     return efx;

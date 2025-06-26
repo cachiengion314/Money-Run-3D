@@ -15,7 +15,6 @@ public class PointerMovement : MonoBehaviour
   // Start is called before the first frame update
   void Start()
   {
-    print("PointerMovement.Start.0.0");
     speed = -speed;
     gameObject.GetComponent<RectTransform>().anchoredPosition
       = startPos.GetComponent<RectTransform>().anchoredPosition;

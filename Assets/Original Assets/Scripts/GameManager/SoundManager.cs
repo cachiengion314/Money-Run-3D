@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-  public static SoundManager instance;
+  public static SoundManager Instance { get; private set; }
   public AudioSource music;
   public AudioSource sound;
   public AudioClip[] audioClip;
@@ -12,7 +12,7 @@ public class SoundManager : MonoBehaviour
 
   private void Start()
   {
-    instance = this;
+    Instance = this;
   }
 
   public void OnOffMusic(float volume)
@@ -29,12 +29,12 @@ public class SoundManager : MonoBehaviour
   }
   public void OpenKindButton()
   {
-    SoundManager.instance.PlaySound(2);
+    PlaySound(2);
   }
 
   public void CloseKindButton()
   {
-    SoundManager.instance.PlaySound(1);
+    PlaySound(1);
   }
 
   void PlaySfx(AudioClip audioClip, HapticPatterns.PresetType presetType)

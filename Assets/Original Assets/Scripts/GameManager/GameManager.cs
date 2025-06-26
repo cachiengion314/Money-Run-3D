@@ -28,20 +28,21 @@ public partial class GameManager : MonoBehaviour
   public GameObject player;
   public GameObject canvas;
   public GameObject powerDisplay;
-  public Text powerDisplayText;
   public Text levelNoDisplay;
   public Image secondStar;
   public Image thirdStar;
   public Image fillDistanceBar;
-  public GameObject cameraFollowPoint;
   public int levelNo;
   public float totalNumberOfStack;
-  public float increamentBlockSpeed;
 
   private void Awake()
   {
-    Instance = this;
-    InitUserData();
+    if (Instance == null)
+    {
+      Instance = this;
+      InitUserData();
+    }
+    else Destroy(gameObject);
   }
 
   private void Update()
@@ -60,7 +61,10 @@ public partial class GameManager : MonoBehaviour
       canvas.transform.GetChild(0).gameObject.SetActive(false);
       canvas.transform.GetChild(1).gameObject.SetActive(true);
 
-      player.transform.rotation = Quaternion.Euler(0, -90, 0);
+      LevelManager.Instance.PlayerControl.transform.rotation
+        = Quaternion.Euler(0, -90, 0);
+      LevelManager.Instance.PlayerControl
+        .GetComponentInChildren<Animator>().SetBool("IsIdle", false);
 
       SetGameState(GameState.Gameplay);
     }

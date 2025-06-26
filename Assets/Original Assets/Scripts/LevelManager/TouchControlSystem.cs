@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Lean.Touch;
 using UnityEngine;
@@ -41,10 +40,8 @@ public partial class LevelManager : MonoBehaviour
   {
     if (GameManager.Instance.GameState != GameState.Gameplay) return;
 
-    var player = GameManager.Instance.PlayerBlockMovement;
-
     var curentTouchPos = Camera.main.ScreenToViewportPoint(finger.ScreenPosition);
-    player.LeftRightMovement(curentTouchPos);
+    PlayerControl.LeftRightMovement(curentTouchPos);
   }
 
   public void TouchStop()
